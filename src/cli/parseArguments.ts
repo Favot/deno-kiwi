@@ -1,4 +1,5 @@
 import { parse, type Args } from "https://deno.land/std@0.200.0/flags/mod.ts";
+
 export function parseArguments(args: string[]): Args {
   const booleanArgs = ["help", "init"];
 

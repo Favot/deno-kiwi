@@ -1,3 +1,5 @@
+import { directoryCreator } from "../../adapter/fileSysteme/directoryCreator.ts";
+
 export const init = () => {
-  console.log("Initializing Kiwi repository");
+  directoryCreator(".kiwi");
 };
