@@ -1,18 +1,15 @@
-import { parseArguments, printHelp } from "./cli/index.ts";
+import { parseArguments } from "./cli/index.ts";
+import { init, printHelp } from "./features/index.ts";
 
-function main(inputArgs: string[]): void {
+export function main(inputArgs: string[]): void {
   const args = parseArguments(inputArgs);
-  console.log(args);
 
   if (args.help) {
     printHelp();
-    Deno.exit(0);
   }
-  const init = args.init;
-  console.log(init);
+
   if (args.init) {
-    console.log("Initializing Kiwi repository");
-    Deno.exit(0);
+    init();
   }
 }
 
