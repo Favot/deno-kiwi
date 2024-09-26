@@ -9,7 +9,7 @@ export function main(inputArgs: string[]): void {
   }
 
   if (args.init) {
-    init();
+    init(Deno.mkdir);
   }
 }
 

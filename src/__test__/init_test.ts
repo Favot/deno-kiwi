@@ -4,33 +4,32 @@ import {
   returnsNext,
   stub,
 } from "@std/testing/mock";
-import { _internals } from "../adapter/fileSysteme/directoryCreator.ts"; // Import the module
-import { main } from "../main.ts";
+import { _internals } from "../adapter/fileSysteme/fileSystemeImplementation.ts"; // Import the module
+import { init } from "../features/index.ts";
 
 Deno.test(
   "should create a new Kiwi repository when the --init flag is passed and the repository does not exist",
   () => {
-    const randomIntStub = stub(
+    const fileSystemeImplementation = stub(
       _internals,
-      "createDirectory",
+      "executeDirectoryCreation",
       returnsNext([undefined])
     );
 
+    const mkdirStub = stub(Deno, "mkdir", returnsNext([]));
+
     try {
-      main(["--init"]);
+      init(mkdirStub);
     } finally {
-      // unwraps the randomInt method on the _internals object
-      randomIntStub.restore();
+      fileSystemeImplementation.restore();
+      mkdirStub.restore();
     }
 
-    // asserts that randomIntStub was called at least once and details about the first call.
-    assertSpyCall(randomIntStub, 0, {
-      args: [".kiwi"],
+    assertSpyCall(fileSystemeImplementation, 0, {
+      args: [".kiwi", mkdirStub],
     });
-    // asserts that randomIntStub was called at least twice and details about the second call.
 
-    // asserts that randomIntStub was only called twice.
-    assertSpyCalls(randomIntStub, 1);
+    assertSpyCalls(fileSystemeImplementation, 1);
   }
 );
 
