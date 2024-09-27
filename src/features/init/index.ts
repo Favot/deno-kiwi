@@ -1,4 +1,5 @@
 import { fileSystemService } from "../../adapter/fileSysteme/fileSystemeImplementation.ts";
+import { GIT_DIR } from "../../constants.ts";
 
 export const init = (
   directoriesCreation: (
@@ -8,5 +9,5 @@ export const init = (
 ) => {
   const { createDirectoryService } = fileSystemService;
 
-  createDirectoryService(".kiwi", directoriesCreation);
+  createDirectoryService(GIT_DIR, directoriesCreation);
 };
