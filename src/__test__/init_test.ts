@@ -23,7 +23,6 @@ Deno.test(
     });
 
     assertSpyCalls(mkdirStub, 1);
-    // expect(true).toBe(true);
   }
 );
 
