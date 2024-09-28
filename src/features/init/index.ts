@@ -10,4 +10,5 @@ export const init = (
   const { createDirectoryService } = fileSystemService;
 
   createDirectoryService(GIT_DIR, directoriesCreation);
+  createDirectoryService(`${GIT_DIR}/objects`, directoriesCreation);
 };

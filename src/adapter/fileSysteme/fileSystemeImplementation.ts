@@ -8,7 +8,7 @@ async function createDirectoryService(
   ) => Promise<void>
 ) {
   try {
-    await directoriesCreation(directoryPath); // Await the promise
+    await directoriesCreation(directoryPath);
   } catch (error) {
     console.log(error);
     if (error instanceof Deno.errors.AlreadyExists) {
