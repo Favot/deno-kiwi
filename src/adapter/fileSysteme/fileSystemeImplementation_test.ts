@@ -7,24 +7,35 @@ export class MockFileSystemService implements FileSystemService {
   private files: Map<string, string> = new Map();
   private directories: Set<string> = new Set();
 
-  async createDirectory(directoryPath: string): Promise<void> {
-    if (this.directories.has(directoryPath)) {
-      throw new Error(`Directory ${directoryPath} already exists`);
-    }
-    this.directories.add(directoryPath);
+  createDirectory(directoryPath: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (this.directories.has(directoryPath)) {
+        reject(new Error(`Directory ${directoryPath} already exists`));
+      } else {
+        this.directories.add(directoryPath);
+        resolve();
+      }
+    });
   }
 
-  async readFile(filePath: string): Promise<string> {
-    const content = this.files.get(filePath);
-    if (content === undefined) {
-      throw new Error(`File ${filePath} not found`);
-    }
-    return content;
+  readFile(filePath: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const content = this.files.get(filePath);
+      if (content === undefined) {
+        reject(new Error(`File ${filePath} not found`));
+      } else {
+        resolve(content);
+      }
+    });
   }
 
   // Helper method for setting up test data
   setFile(filePath: string, content: string): void {
     this.files.set(filePath, content);
+  }
+
+  setExistingDirectory(directoryPath: string): void {
+    this.directories.add(directoryPath);
   }
 }
 

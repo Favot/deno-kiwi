@@ -17,6 +17,8 @@ Deno.test(
     });
 
     assertSpyCalls(spyCreateDirectory, 2);
+
+    spyCreateDirectory.restore();
   }
 );
 
@@ -37,5 +39,33 @@ Deno.test(
     assertSpyCall(spyCreateDirectory, 1, {
       args: [`${GIT_DIR}/objects`],
     });
+
+    spyCreateDirectory.restore();
+  }
+);
+
+Deno.test(
+  "should log a message if Kiwi git directory already exists",
+  async () => {
+    const mockFileSystem = new MockFileSystemService();
+    mockFileSystem.setExistingDirectory(GIT_DIR);
+
+    const spyCreateDirectory = spy(mockFileSystem, "createDirectory");
+    const spyConsoleLog = spy(console, "log");
+
+    await init(mockFileSystem);
+
+    assertSpyCalls(spyCreateDirectory, 1);
+    assertSpyCall(spyCreateDirectory, 0, {
+      args: [GIT_DIR],
+    });
+
+    assertSpyCalls(spyConsoleLog, 1);
+    assertSpyCall(spyConsoleLog, 0, {
+      args: ["Kiwi git repository already exists"],
+    });
+
+    spyCreateDirectory.restore();
+    spyConsoleLog.restore();
   }
 );
