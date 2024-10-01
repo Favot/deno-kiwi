@@ -1,50 +1,41 @@
-import {
-  assertSpyCall,
-  assertSpyCalls,
-  resolvesNext,
-  stub,
-} from "@std/testing/mock";
+import { assertSpyCall, assertSpyCalls, spy } from "@std/testing/mock";
+import { MockFileSystemService } from "../adapter/fileSysteme/fileSystemeImplementation_test.ts";
 import { GIT_DIR } from "../constants.ts";
 import { init } from "../features/index.ts";
 
 Deno.test(
   "should create a new constent directory tracker repository when the --init flag is passed and the repository does not exist",
-  () => {
-    const mkdirStub = stub(Deno, "mkdir");
+  async () => {
+    const mockFileSystem = new MockFileSystemService();
 
-    try {
-      init(mkdirStub);
-    } finally {
-      mkdirStub.restore();
-    }
+    const spyCreateDirectory = spy(mockFileSystem, "createDirectory");
 
-    assertSpyCall(mkdirStub, 0, {
+    await init(mockFileSystem);
+
+    assertSpyCall(spyCreateDirectory, 0, {
       args: [GIT_DIR],
     });
 
-    assertSpyCalls(mkdirStub, 1);
+    assertSpyCalls(spyCreateDirectory, 2);
   }
 );
 
 Deno.test(
   "shoul create a new object tracker directory in when the --init flag is passed and the repository does not exist",
-  () => {
-    const mkdirStub = stub(Deno, "mkdir", resolvesNext([]));
+  async () => {
+    const mockFileSystem = new MockFileSystemService();
 
-    try {
-      init(mkdirStub);
-    } finally {
-      mkdirStub.restore();
-    }
+    const spyCreateDirectory = spy(mockFileSystem, "createDirectory");
 
-    assertSpyCall(mkdirStub, 0, {
+    await init(mockFileSystem);
+
+    assertSpyCalls(spyCreateDirectory, 2);
+    assertSpyCall(spyCreateDirectory, 0, {
       args: [GIT_DIR],
     });
 
-    assertSpyCall(mkdirStub, 1, {
+    assertSpyCall(spyCreateDirectory, 1, {
       args: [`${GIT_DIR}/objects`],
     });
-
-    assertSpyCalls(mkdirStub, 2);
   }
 );
