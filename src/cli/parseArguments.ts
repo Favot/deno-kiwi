@@ -1,10 +1,10 @@
 import { parse, type Args } from "https://deno.land/std@0.200.0/flags/mod.ts";
 
 export function parseArguments(args: string[]): Args {
-  const booleanArgs = ["help", "init"];
+  const booleanArgs = ["help", "init", ""];
 
   // All string arguments
-  const stringArgs = [""];
+  const stringArgs = ["hash-object"];
 
   // And a list of aliases
   const alias = {

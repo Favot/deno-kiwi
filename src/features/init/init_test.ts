@@ -1,7 +1,7 @@
 import { assertSpyCall, assertSpyCalls, spy } from "@std/testing/mock";
-import { MockFileSystemService } from "../adapter/fileSystem/fileSystemeImplementation_test.ts";
-import { GIT_DIR } from "../constants.ts";
-import { init } from "../features/index.ts";
+import { MockFileSystemService } from "../../adapter/fileSystem/MockFileSystemService.ts";
+import { GIT_DIR } from "../../constants.ts";
+import { init } from "../index.ts";
 
 Deno.test(
   "should create a new constent directory tracker repository when the --init flag is passed and the repository does not exist",

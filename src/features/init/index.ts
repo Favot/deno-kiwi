@@ -1,5 +1,5 @@
-import { createDirectoryService } from "../../adapter/fileSysteme/FileSystemOperations.ts";
-import type { FileSystemService } from "../../adapter/fileSysteme/FileSystemService.ts";
+import { createDirectoryService } from "../../adapter/fileSystem/FileSystemOperations.ts";
+import type { FileSystemService } from "../../adapter/fileSystem/FileSystemService.ts";
 import { GIT_DIR } from "../../constants.ts";
 
 export const init = async (fileSystem: FileSystemService) => {
