@@ -13,3 +13,11 @@ export function readFile(
 ): Promise<string> {
   return fileSystem.readFile(filePath);
 }
+
+export function writeFile(
+  fileSystem: FileSystemService,
+  filePath: string,
+  content: Uint8Array
+): Promise<void> {
+  return fileSystem.writeFile(filePath, content);
+}

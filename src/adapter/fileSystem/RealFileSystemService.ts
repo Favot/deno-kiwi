@@ -22,4 +22,15 @@ export class RealFileSystemService implements FileSystemService {
       throw error;
     }
   }
+
+  async writeFile(filePath: string, content: Uint8Array): Promise<void> {
+    try {
+      await Deno.writeFile(filePath, content);
+    } catch (error) {
+      if (error instanceof Deno.errors.NotFound) {
+        throw new Error(`File ${filePath} not found`);
+      }
+      throw error;
+    }
+  }
 }

@@ -1,43 +1,7 @@
 import { assertEquals } from "@std/assert/equals";
 import { assertRejects } from "@std/assert/rejects";
 import { createDirectoryService, readFile } from "./FileSystemOperations.ts";
-import type { FileSystemService } from "./FileSystemService.ts";
-
-export class MockFileSystemService implements FileSystemService {
-  private files: Map<string, string> = new Map();
-  private directories: Set<string> = new Set();
-
-  createDirectory(directoryPath: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      if (this.directories.has(directoryPath)) {
-        reject(new Error(`Directory ${directoryPath} already exists`));
-      } else {
-        this.directories.add(directoryPath);
-        resolve();
-      }
-    });
-  }
-
-  readFile(filePath: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const content = this.files.get(filePath);
-      if (content === undefined) {
-        reject(new Error(`File ${filePath} not found`));
-      } else {
-        resolve(content);
-      }
-    });
-  }
-
-  // Helper method for setting up test data
-  setFile(filePath: string, content: string): void {
-    this.files.set(filePath, content);
-  }
-
-  setExistingDirectory(directoryPath: string): void {
-    this.directories.add(directoryPath);
-  }
-}
+import { MockFileSystemService } from "./MockFileSystemService.ts";
 
 Deno.test("should create a directory", async () => {
   const mockFileSystem = new MockFileSystemService();
