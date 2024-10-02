@@ -1,5 +1,5 @@
 import { assertSpyCall, assertSpyCalls, spy } from "@std/testing/mock";
-import { MockFileSystemService } from "../adapter/fileSysteme/fileSystemeImplementation_test.ts";
+import { MockFileSystemService } from "../adapter/fileSystem/fileSystemeImplementation_test.ts";
 import { GIT_DIR } from "../constants.ts";
 import { init } from "../features/index.ts";
 

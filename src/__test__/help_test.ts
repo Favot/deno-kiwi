@@ -7,7 +7,7 @@ Deno.test(
   () => {
     const spyOnLog = spy(console, "log");
     main(["--help"]);
-    assertEquals(spyOnLog.calls.length, 4);
+    assertEquals(spyOnLog.calls.length, 5);
     assertEquals(spyOnLog.calls[0].args, ["Usage: kiwi [OPTIONS...]"]);
     assertEquals(spyOnLog.calls[1].args, ["\nOptional flags:"]);
     assertEquals(spyOnLog.calls[2].args, [
@@ -15,6 +15,9 @@ Deno.test(
     ]);
     assertEquals(spyOnLog.calls[3].args, [
       "  --init                    Create a empty Kiwi respository or reinsitialize an existing one",
+    ]);
+    assertEquals(spyOnLog.calls[4].args, [
+      "  --hash-object            Hash an object",
     ]);
     spyOnLog.restore();
   }
