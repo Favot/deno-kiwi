@@ -1,9 +1,9 @@
 import { assertEquals } from "@std/assert/equals";
 import { assertRejects } from "@std/assert/rejects";
 import { assertSpyCall, assertSpyCalls, spy } from "@std/testing/mock";
-import { MockFileSystemService } from "../adapter/fileSystem/MockFileSystemService.ts";
-import { hashFile } from "../features/hashObject/hashObject.ts";
-import { MockHashService } from "../service/hash/MockHashService.ts";
+import { MockFileSystemService } from "../../adapter/fileSystem/MockFileSystemService.ts";
+import { MockHashService } from "../../service/hash/MockHashService.ts";
+import { hashFile } from "./hashObject.ts";
 
 Deno.test("hashFile should correctly hash a file and store it", async () => {
   const mockFileSystem = new MockFileSystemService();

@@ -6,7 +6,7 @@ Deno.test(
   "should print the help message when the --help flag is passed",
   () => {
     const spyOnLog = spy(console, "log");
-    main(["--help"]);
+    main({ inputArgs: ["--help"] });
     assertEquals(spyOnLog.calls.length, 5);
     assertEquals(spyOnLog.calls[0].args, ["Usage: kiwi [OPTIONS...]"]);
     assertEquals(spyOnLog.calls[1].args, ["\nOptional flags:"]);
