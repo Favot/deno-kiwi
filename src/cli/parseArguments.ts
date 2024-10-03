@@ -4,7 +4,7 @@ export function parseArguments(args: string[]): Args {
   const booleanArgs = ["help", "init"];
 
   // All string arguments
-  const stringArgs = [""];
+  const stringArgs = ["hash-object"];
 
   // And a list of aliases
   const alias = {

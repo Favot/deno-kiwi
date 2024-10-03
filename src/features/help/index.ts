@@ -5,4 +5,5 @@ export function printHelp(): void {
   console.log(
     "  --init                    Create a empty Kiwi respository or reinsitialize an existing one"
   );
+  console.log("  --hash-object            Hash an object");
 }

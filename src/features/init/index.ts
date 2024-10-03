@@ -1,13 +1,17 @@
-import { fileSystemService } from "../../adapter/fileSysteme/fileSystemeImplementation.ts";
+import { createDirectoryService } from "../../adapter/fileSystem/FileSystemOperations.ts";
+import type { FileSystemService } from "../../adapter/fileSystem/FileSystemService.ts";
 import { GIT_DIR } from "../../constants.ts";
 
-export const init = (
-  directoriesCreation: (
-    path: string | URL,
-    options?: Deno.MkdirOptions | undefined
-  ) => Promise<void>
-) => {
-  const { createDirectoryService } = fileSystemService;
-
-  createDirectoryService(GIT_DIR, directoriesCreation);
+export const init = async (fileSystem: FileSystemService) => {
+  try {
+    await createDirectoryService(fileSystem, GIT_DIR);
+    await createDirectoryService(fileSystem, `${GIT_DIR}/objects`);
+    console.log("Kiwi git repository initialized");
+  } catch (error) {
+    if (error instanceof Error && error.message.includes("already exists")) {
+      console.log("Kiwi git repository already exists");
+    } else {
+      throw error;
+    }
+  }
 };

@@ -1,22 +1,15 @@
-import { assertSpyCall, assertSpyCalls, stub } from "@std/testing/mock";
-import { GIT_DIR } from "../constants.ts";
-import { init } from "../features/index.ts";
+import { assertSpyCalls, spy } from "@std/testing/mock";
+import { features } from "../features/index.ts";
+import { main } from "../main.ts";
 
 Deno.test(
-  "should create a new constent directory tracker repository when the --init flag is passed and the repository does not exist",
+  "should call the init function when the --init flag is passed",
   () => {
-    const mkdirStub = stub(Deno, "mkdir");
+    const spyInit = spy(features, "init");
 
-    try {
-      init(mkdirStub);
-    } finally {
-      mkdirStub.restore();
-    }
+    main({ inputArgs: ["--init"] });
 
-    assertSpyCall(mkdirStub, 0, {
-      args: [GIT_DIR],
-    });
-
-    assertSpyCalls(mkdirStub, 1);
+    assertSpyCalls(spyInit, 1);
+    spyInit.restore();
   }
 );
