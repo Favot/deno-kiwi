@@ -47,7 +47,6 @@ export async function main({
 
     return await featureService.catFile(
       args.catFile,
-      hashService,
       fileSystemService,
     );
   }

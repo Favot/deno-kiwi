@@ -10,8 +10,7 @@ export interface FeaturesService {
         fileSystem: FileSystemService,
     ): Promise<string>;
     catFile(
-        filePath: string,
-        hashService: HashService,
+        objectId: string,
         fileSystem: FileSystemService,
     ): Promise<void>;
 }
