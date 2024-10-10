@@ -1,11 +1,22 @@
 import type { FileSystemService } from "../../../adapter/fileSystem/FileSystemService.ts";
 import { OBJECTS_DIR_PATH } from "../../../constants.ts";
+import type { ObjectType } from "../../../types/Object.ts";
+
+export type SplitContentResult = {
+    objectType: ObjectType;
+    content: string;
+};
 
 export const catFile = async (
     objectId: string,
     fileSystem: FileSystemService,
+    expectedType: ObjectType = "NONE",
 ): Promise<void> => {
-    const fileConent = await getObject(objectId, fileSystem);
+    const fileConent = await getObject(
+        objectId,
+        fileSystem,
+        expectedType,
+    );
 
     console.log(fileConent);
 };
@@ -13,8 +24,26 @@ export const catFile = async (
 const getObject = async (
     objectId: string,
     fileSystemService: FileSystemService,
+    expectedObjectType: ObjectType = "NONE",
 ) => {
-    return await fileSystemService.readFile(
+    const fileConent = await fileSystemService.readFile(
         `${OBJECTS_DIR_PATH}/${objectId}`,
     );
+
+    const { objectType, content } = splitFileContent(fileConent);
+
+    if (objectType !== expectedObjectType) {
+        throw new Error(`Expected ${expectedObjectType} got ${objectType}`);
+    }
+
+    return content;
+};
+
+export const splitFileContent = (fileContent: string): SplitContentResult => {
+    const splitedFileConent = fileContent.split("\x00");
+
+    return {
+        objectType: splitedFileConent[0] as ObjectType,
+        content: splitedFileConent[1],
+    };
 };

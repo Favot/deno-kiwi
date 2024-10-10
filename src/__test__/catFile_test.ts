@@ -15,7 +15,7 @@ Deno.test(
         mockFileSystem.setDefaultFileContent();
         mockFileSystem.setFile(
             `${OBJECTS_DIR_PATH}/0e08b5e8c10abc3e455b75286ba4a1fbd56e18a5`,
-            "test content",
+            "NONE\x00test content",
         );
 
         const mockHashService = new MockHashService();

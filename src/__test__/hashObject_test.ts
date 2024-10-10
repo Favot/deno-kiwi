@@ -5,7 +5,7 @@ import {
 } from "../adapter/fileSystem/MockFileSystemService.ts";
 import { main } from "../main.ts";
 import { RealFeaturesService } from "../service/features/RealFeatureService.ts";
-import { MockHashService } from "../service/hash/MockHashService.ts";
+import { RealHashService } from "../service/hash/RealHashService.ts";
 
 Deno.test(
   "should call the hashObject function when the --hashObject flag is passed with a file path",
@@ -13,8 +13,7 @@ Deno.test(
     const mockFileSystem = new MockFileSystemService();
     mockFileSystem.setDefaultFileContent();
 
-    const mockHashService = new MockHashService();
-    mockHashService.setDefaultHashResult();
+    const mockHashService = new RealHashService();
 
     const featuresService = new RealFeaturesService();
     using spyHashObject = spy(featuresService, "hashObject");

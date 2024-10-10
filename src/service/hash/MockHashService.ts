@@ -5,9 +5,9 @@ export class MockHashService implements HashService {
 
   generateHash(
     object: string,
-    algorithm: "SHA-256" | "SHA-1",
+    _algorithm: "SHA-256" | "SHA-1",
   ): Promise<string> {
-    const key = `${object}-${algorithm}`;
+    const key = `${object}`;
     const result = this.hashResults.get(key);
     if (result === undefined) {
       throw new Error(`No mock result for ${key}`);
@@ -17,10 +17,9 @@ export class MockHashService implements HashService {
 
   setHashResult(
     object: string,
-    algorithm: "SHA-256" | "SHA-1",
     result: string,
   ): void {
-    this.hashResults.set(`${object}-${algorithm}`, result);
+    this.hashResults.set(`${object}`, result);
   }
 
   setDefaultHashResult(): void {
