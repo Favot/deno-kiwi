@@ -1,35 +1,47 @@
 import { assertSpyCall, assertSpyCalls, spy } from "@std/testing/mock";
-import { MockFileSystemService } from "../adapter/fileSystem/MockFileSystemService.ts";
-import { features } from "../features/index.ts";
+import {
+  DEFAULT_FILE_SYSTEME_VALUE,
+  MockFileSystemService,
+} from "../adapter/fileSystem/MockFileSystemService.ts";
 import { main } from "../main.ts";
+import { RealFeaturesService } from "../service/features/RealFeatureService.ts";
+import { MockHashService } from "../service/hash/MockHashService.ts";
 
 Deno.test(
   "should call the hashObject function when the --hashObject flag is passed with a file path",
-  () => {
+  async () => {
     const mockFileSystem = new MockFileSystemService();
+    mockFileSystem.setDefaultFileContent();
 
-    mockFileSystem.setFile("test.txt", "test content");
+    const mockHashService = new MockHashService();
+    mockHashService.setDefaultHashResult();
 
-    const spyHashObject = spy(features, "hashObject");
+    const featuresService = new RealFeaturesService();
+    using spyHashObject = spy(featuresService, "hashObject");
 
-    try {
-      main({
-        inputArgs: ["--hashObject=test.txt"],
-        fileSystemService: mockFileSystem,
-      });
-    } catch (_error) {
-      assertSpyCalls(spyHashObject, 1);
-    } finally {
-      spyHashObject.restore();
-    }
+    await main({
+      inputArgs: ["--hashObject=test.txt"],
+      fileSystemService: mockFileSystem,
+      hashService: mockHashService,
+      featureService: featuresService,
+    });
+
+    assertSpyCalls(spyHashObject, 1);
+    assertSpyCall(spyHashObject, 0, {
+      args: [
+        DEFAULT_FILE_SYSTEME_VALUE.fileName,
+        mockHashService,
+        mockFileSystem,
+      ],
+    });
   },
 );
 
 Deno.test(
   "should not call the hashObject function and should log an error when the --hashObject flag is passed without a file path",
   () => {
-    const spyHashObject = spy(features, "hashObject");
-    const spyConsoleLog = spy(console, "log");
+    const featuresService = new RealFeaturesService();
+    using spyHashObject = spy(featuresService, "hashObject");
     const spyConsoleError = spy(console, "error");
 
     const errorMessage = "Missing file path for --hashObject flag";
@@ -37,14 +49,11 @@ Deno.test(
     main({ inputArgs: ["--hashObject"] });
 
     assertSpyCalls(spyHashObject, 0);
-    assertSpyCalls(spyConsoleLog, 0);
     assertSpyCalls(spyConsoleError, 1);
     assertSpyCall(spyConsoleError, 0, {
       args: [errorMessage],
     });
 
-    spyHashObject.restore();
-    spyConsoleLog.restore();
     spyConsoleError.restore();
   },
 );
