@@ -1,5 +1,10 @@
 import type { FileSystemService } from "./FileSystemService.ts";
 
+export const DEFAULT_FILE_SYSTEME_VALUE = {
+  fileContent: "test content",
+  fileName: "test.txt",
+};
+
 export class MockFileSystemService implements FileSystemService {
   private files: Map<string, string> = new Map();
   private directories: Set<string> = new Set();
@@ -44,5 +49,12 @@ export class MockFileSystemService implements FileSystemService {
 
   setFileContent(filePath: string, content: Uint8Array): void {
     this.fileContents.set(filePath, content);
+  }
+
+  setDefaultFileContent(): void {
+    this.files.set(
+      DEFAULT_FILE_SYSTEME_VALUE.fileName,
+      DEFAULT_FILE_SYSTEME_VALUE.fileContent,
+    );
   }
 }

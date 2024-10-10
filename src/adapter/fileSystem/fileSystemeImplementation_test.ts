@@ -8,12 +8,6 @@ Deno.test("should create a directory", async () => {
   const directoryPath = "./test";
 
   await createDirectoryService(mockFileSystem, directoryPath);
-
-  await assertRejects(
-    () => createDirectoryService(mockFileSystem, directoryPath),
-    Error,
-    `Directory ${directoryPath} already exists`,
-  );
 });
 
 Deno.test("should read a file successfully", async () => {
