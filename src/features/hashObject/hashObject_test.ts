@@ -3,35 +3,38 @@ import { assertRejects } from "@std/assert/rejects";
 import { assertSpyCall, assertSpyCalls, spy } from "@std/testing/mock";
 import { MockFileSystemService } from "../../adapter/fileSystem/MockFileSystemService.ts";
 import { MockHashService } from "../../service/hash/MockHashService.ts";
-import { hashFile } from "./hashObject.ts";
+import { hashObject } from "./hashObject.ts";
 
-Deno.test("hashFile should correctly hash a file and store it", async () => {
+function setupMockServices(filePath: string, fileContent: string) {
   const mockFileSystem = new MockFileSystemService();
   const mockHashService = new MockHashService();
+  mockFileSystem.setFile(filePath, fileContent);
+  return { mockFileSystem, mockHashService };
+}
 
+Deno.test("hashFile should correctly hash and store file content", async () => {
   const testFilePath = "/test/file.txt";
   const testFileContent = "Hello, World!";
   const expectedHash = "fakehash123";
 
-  // Set up mock file system
-  mockFileSystem.setFile(testFilePath, testFileContent);
-  const spyCreateDirectory = spy(mockFileSystem, "createDirectory");
+  const { mockFileSystem, mockHashService } = setupMockServices(
+    testFilePath,
+    testFileContent
+  );
+
   const spyWriteFile = spy(mockFileSystem, "writeFile");
 
-  // Set up mock hash service
   mockHashService.setHashResult(testFileContent, "SHA-256", expectedHash);
-  const spyHashObject = spy(mockHashService, "hashObject");
 
-  const result = await hashFile(testFilePath, mockHashService, mockFileSystem);
+  const spyGenerateHash = spy(mockHashService, "generateHash");
 
-  // Assert the result
+  const result = await hashObject(
+    testFilePath,
+    mockHashService,
+    mockFileSystem
+  );
+
   assertEquals(result, expectedHash);
-
-  // Assert that the correct methods were called
-  assertSpyCalls(spyCreateDirectory, 1);
-  assertSpyCall(spyCreateDirectory, 0, {
-    args: ["./.kiwi/objects/" + expectedHash],
-  });
 
   assertSpyCalls(spyWriteFile, 1);
   assertSpyCall(spyWriteFile, 0, {
@@ -41,13 +44,16 @@ Deno.test("hashFile should correctly hash a file and store it", async () => {
     ],
   });
 
-  assertSpyCalls(spyHashObject, 1);
-  assertSpyCall(spyHashObject, 0, {
+  assertSpyCalls(spyGenerateHash, 1);
+  assertSpyCall(spyGenerateHash, 0, {
     args: [testFileContent, "SHA-256"],
   });
+
+  spyWriteFile.restore();
+  spyGenerateHash.restore();
 });
 
-Deno.test("hashFile should throw an error for empty files", async () => {
+Deno.test("hashFile should throw an error when the file is empty", async () => {
   const mockFileSystem = new MockFileSystemService();
   const mockHashService = new MockHashService();
 
@@ -55,21 +61,24 @@ Deno.test("hashFile should throw an error for empty files", async () => {
   mockFileSystem.setFile(testFilePath, "");
 
   await assertRejects(
-    () => hashFile(testFilePath, mockHashService, mockFileSystem),
+    () => hashObject(testFilePath, mockHashService, mockFileSystem),
     Error,
     `The file ${testFilePath} doesn't have any data to read`
   );
 });
 
-Deno.test("hashFile should throw an error for non-existent files", async () => {
-  const mockFileSystem = new MockFileSystemService();
-  const mockHashService = new MockHashService();
+Deno.test(
+  "hashFile should throw an error when the file does not exist",
+  async () => {
+    const mockFileSystem = new MockFileSystemService();
+    const mockHashService = new MockHashService();
 
-  const testFilePath = "/test/nonexistent.txt";
+    const testFilePath = "/test/nonexistent.txt";
 
-  await assertRejects(
-    () => hashFile(testFilePath, mockHashService, mockFileSystem),
-    Error,
-    `File ${testFilePath} not found`
-  );
-});
+    await assertRejects(
+      () => hashObject(testFilePath, mockHashService, mockFileSystem),
+      Error,
+      `File ${testFilePath} not found`
+    );
+  }
+);

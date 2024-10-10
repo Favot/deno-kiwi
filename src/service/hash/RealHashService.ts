@@ -2,7 +2,7 @@ import { encodeHex } from "jsr:@std/encoding/hex";
 import type { HashService } from "./HashService.ts";
 
 export class RealHashService implements HashService {
-  async hashObject(
+  async generateHash(
     object: string,
     algorithm: "SHA-256" | "SHA-1"
   ): Promise<string> {
