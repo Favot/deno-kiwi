@@ -3,7 +3,10 @@ import type { HashService } from "./HashService.ts";
 export class MockHashService implements HashService {
   private hashResults: Map<string, string> = new Map();
 
-  hashObject(object: string, algorithm: "SHA-256" | "SHA-1"): Promise<string> {
+  generateHash(
+    object: string,
+    algorithm: "SHA-256" | "SHA-1"
+  ): Promise<string> {
     const key = `${object}-${algorithm}`;
     const result = this.hashResults.get(key);
     if (result === undefined) {

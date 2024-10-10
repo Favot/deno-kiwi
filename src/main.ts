@@ -1,7 +1,7 @@
 import type { FileSystemService } from "./adapter/fileSystem/FileSystemService.ts";
 import { RealFileSystemService } from "./adapter/fileSystem/RealFileSystemService.ts";
 import { parseArguments } from "./cli/index.ts";
-import { hashFile } from "./features/hashObject/hashObject.ts";
+import { hashObject } from "./features/hashObject/hashObject.ts";
 import { features } from "./features/index.ts";
 import type { HashService } from "./service/hash/HashService.ts";
 import { RealHashService } from "./service/hash/RealHashService.ts";
@@ -31,7 +31,7 @@ export function main({
       return console.error("Missing file path for --hashObject flag");
     }
 
-    hashFile(args.hashObject, hashService, fileSystemService);
+    hashObject(args.hashObject, hashService, fileSystemService);
   }
 }
 

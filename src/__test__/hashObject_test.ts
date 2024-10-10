@@ -10,11 +10,11 @@ Deno.test(
 
     mockFileSystem.setFile("test.txt", "test content");
 
-    const spyHashObject = spy(features, "hashFile");
+    const spyHashObject = spy(features, "hashObject");
 
     try {
       main({
-        inputArgs: ["--hashObject", "test.txt"],
+        inputArgs: ["--hashObject=test.txt"],
         fileSystemService: mockFileSystem,
       });
     } catch (_error) {
@@ -26,20 +26,9 @@ Deno.test(
 );
 
 Deno.test(
-  "shouldn't call the hashObject function when the --hashObject flag is passed without a file path",
+  "should not call the hashObject function and should log an error when the --hashObject flag is passed without a file path",
   () => {
-    const spyHashObject = spy(features, "hashFile");
-
-    main({ inputArgs: ["--hashObject"] });
-
-    assertSpyCalls(spyHashObject, 0);
-    spyHashObject.restore();
-  }
-);
-
-Deno.test(
-  "should console log and error when the --hashObject is passed without a file path",
-  () => {
+    const spyHashObject = spy(features, "hashObject");
     const spyConsoleLog = spy(console, "log");
     const spyConsoleError = spy(console, "error");
 
@@ -47,11 +36,14 @@ Deno.test(
 
     main({ inputArgs: ["--hashObject"] });
 
+    assertSpyCalls(spyHashObject, 0);
     assertSpyCalls(spyConsoleLog, 0);
     assertSpyCalls(spyConsoleError, 1);
     assertSpyCall(spyConsoleError, 0, {
       args: [errorMessage],
     });
+
+    spyHashObject.restore();
     spyConsoleLog.restore();
     spyConsoleError.restore();
   }

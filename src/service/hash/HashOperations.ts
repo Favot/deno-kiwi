@@ -1,9 +1,9 @@
 import type { HashService } from "./HashService.ts";
 
-export function hashObject(
+export function generateHash(
   hashService: HashService,
   object: string,
   algorithm: "SHA-256" | "SHA-1"
 ): Promise<string> {
-  return hashService.hashObject(object, algorithm);
+  return hashService.generateHash(object, algorithm);
 }
