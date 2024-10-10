@@ -1,6 +1,6 @@
 import { assertSpyCall, assertSpyCalls, spy } from "@std/testing/mock";
 import { MockFileSystemService } from "../../../adapter/fileSystem/MockFileSystemService.ts";
-import { GIT_DIR } from "../../../constants.ts";
+import { GIT_DIR, OBJECTS_DIR_PATH } from "../../../constants.ts";
 import { init } from "./index.ts";
 
 Deno.test(
@@ -37,7 +37,7 @@ Deno.test(
     });
 
     assertSpyCall(spyCreateDirectory, 1, {
-      args: [`${GIT_DIR}/objects`],
+      args: [`${OBJECTS_DIR_PATH}`],
     });
 
     spyCreateDirectory.restore();
