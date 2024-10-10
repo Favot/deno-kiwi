@@ -1,5 +1,6 @@
 import type { FileSystemService } from "../../adapter/fileSystem/FileSystemService.ts";
 import type { HashService } from "../hash/HashService.ts";
+import { catFile } from "./catFile/index.ts";
 import type { FeaturesService } from "./FeaturesService.ts";
 import { hashObject } from "./hashObject/hashObject.ts";
 import { printHelp } from "./help/index.ts";
@@ -21,4 +22,12 @@ export class RealFeaturesService implements FeaturesService {
 	): Promise<string> => {
 		return hashObject(filePath, hashService, fileSystem);
 	};
+
+	catFile(
+		filePath: string,
+		hashService: HashService,
+		fileSystem: FileSystemService,
+	): Promise<void> {
+		return catFile();
+	}
 }
