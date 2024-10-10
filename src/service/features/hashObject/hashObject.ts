@@ -17,8 +17,8 @@ export const hashObject = async (
 
   const newFilePath = `${OBJECTS_DIR_PATH}/${objectId}`;
 
-  const encodedFileContent = new TextEncoder().encode(fileContent);
   try {
+    const encodedFileContent = new TextEncoder().encode(fileContent);
     await fileSystem.writeFile(newFilePath, encodedFileContent);
     return objectId;
   } catch (error) {
