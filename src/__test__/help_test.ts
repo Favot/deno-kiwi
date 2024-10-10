@@ -20,5 +20,5 @@ Deno.test(
       "  --hash-object            Hash an object",
     ]);
     spyOnLog.restore();
-  }
+  },
 );

@@ -19,7 +19,7 @@ Deno.test(
     assertSpyCalls(spyCreateDirectory, 2);
 
     spyCreateDirectory.restore();
-  }
+  },
 );
 
 Deno.test(
@@ -41,7 +41,7 @@ Deno.test(
     });
 
     spyCreateDirectory.restore();
-  }
+  },
 );
 
 Deno.test(
@@ -67,5 +67,5 @@ Deno.test(
 
     spyCreateDirectory.restore();
     spyConsoleLog.restore();
-  }
+  },
 );

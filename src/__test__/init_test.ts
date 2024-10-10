@@ -11,5 +11,5 @@ Deno.test(
 
     assertSpyCalls(spyInit, 1);
     spyInit.restore();
-  }
+  },
 );

@@ -7,7 +7,7 @@ import type { HashService } from "../../service/hash/HashService.ts";
 export const hashObject = async (
   filePath: string,
   hashService: HashService,
-  fileSystem: FileSystemService
+  fileSystem: FileSystemService,
 ): Promise<string> => {
   const fileContent = await readFile(fileSystem, filePath);
 
@@ -30,7 +30,7 @@ export const hashObject = async (
 
     if (error instanceof Deno.errors.PermissionDenied) {
       throw new Error(
-        `Permission denied to write the file at ${newFilePath}: ${error.message}`
+        `Permission denied to write the file at ${newFilePath}: ${error.message}`,
       );
     }
     throw new Error(`Failed to write the file at ${newFilePath}`);
