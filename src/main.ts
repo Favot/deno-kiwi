@@ -39,6 +39,17 @@ export async function main({
       fileSystemService,
     );
   }
+
+  if (args.catFile) {
+    if (!args.catFile.length) {
+      return console.error("Missing file path for --catFile flag");
+    }
+
+    return await featureService.catFile(
+      args.catFile,
+      fileSystemService,
+    );
+  }
 }
 
 main({ inputArgs: Deno.args });

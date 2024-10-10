@@ -1,24 +1,35 @@
 import type { FileSystemService } from "../../adapter/fileSystem/FileSystemService.ts";
 import type { HashService } from "../hash/HashService.ts";
+import { catFile } from "./catFile/index.ts";
 import type { FeaturesService } from "./FeaturesService.ts";
 import { hashObject } from "./hashObject/hashObject.ts";
 import { printHelp } from "./help/index.ts";
 import { init } from "./init/index.ts";
 
 export class RealFeaturesService implements FeaturesService {
-	init = (fileSystem: FileSystemService): Promise<void> => {
-		return init(fileSystem);
-	};
+    init = (fileSystem: FileSystemService): Promise<void> => {
+        return init(fileSystem);
+    };
 
-	printHelp = (): void => {
-		return printHelp();
-	};
+    printHelp = (): void => {
+        return printHelp();
+    };
 
-	hashObject = (
-		filePath: string,
-		hashService: HashService,
-		fileSystem: FileSystemService,
-	): Promise<string> => {
-		return hashObject(filePath, hashService, fileSystem);
-	};
+    hashObject = (
+        filePath: string,
+        hashService: HashService,
+        fileSystem: FileSystemService,
+    ): Promise<string> => {
+        return hashObject(filePath, hashService, fileSystem);
+    };
+
+    catFile(
+        objectId: string,
+        fileSystem: FileSystemService,
+    ): Promise<void> {
+        return catFile(
+            objectId,
+            fileSystem,
+        );
+    }
 }
