@@ -22,4 +22,8 @@ export class MockHashService implements HashService {
   ): void {
     this.hashResults.set(`${object}-${algorithm}`, result);
   }
+
+  setDefaultHashResult(): void {
+    this.hashResults.set("test content-SHA-256", "generatedHash");
+  }
 }

@@ -1,29 +1,31 @@
 import type { FileSystemService } from "./adapter/fileSystem/FileSystemService.ts";
 import { RealFileSystemService } from "./adapter/fileSystem/RealFileSystemService.ts";
 import { parseArguments } from "./cli/index.ts";
-import { hashObject } from "./features/hashObject/hashObject.ts";
-import { features } from "./features/index.ts";
+import type { FeaturesService } from "./service/features/FeaturesService.ts";
+import { RealFeaturesService } from "./service/features/RealFeatureService.ts";
 import type { HashService } from "./service/hash/HashService.ts";
 import { RealHashService } from "./service/hash/RealHashService.ts";
 
-export function main({
+export async function main({
   inputArgs,
+  featureService = new RealFeaturesService(),
   fileSystemService = new RealFileSystemService(),
   hashService = new RealHashService(),
 }: {
   inputArgs: string[];
+  featureService?: FeaturesService;
   fileSystemService?: FileSystemService;
   hashService?: HashService;
-}): void {
+}): Promise<void | string> {
   const args = parseArguments(inputArgs);
 
   if (args.help) {
-    features.printHelp();
+    featureService.printHelp();
   }
 
   if (args.init) {
     console.log("init");
-    features.init(fileSystemService);
+    featureService.init(fileSystemService);
   }
 
   if (args.hashObject) {
@@ -31,7 +33,11 @@ export function main({
       return console.error("Missing file path for --hashObject flag");
     }
 
-    hashObject(args.hashObject, hashService, fileSystemService);
+    return await featureService.hashObject(
+      args.hashObject,
+      hashService,
+      fileSystemService,
+    );
   }
 }
 

@@ -1,8 +1,8 @@
 import { assertEquals } from "@std/assert/equals";
 import { assertRejects } from "@std/assert/rejects";
 import { assertSpyCall, assertSpyCalls, spy } from "@std/testing/mock";
-import { MockFileSystemService } from "../../adapter/fileSystem/MockFileSystemService.ts";
-import { MockHashService } from "../../service/hash/MockHashService.ts";
+import { MockFileSystemService } from "../../../adapter/fileSystem/MockFileSystemService.ts";
+import { MockHashService } from "../../hash/MockHashService.ts";
 import { hashObject } from "./hashObject.ts";
 
 function setupMockServices(filePath: string, fileContent: string) {

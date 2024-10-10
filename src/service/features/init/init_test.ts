@@ -1,7 +1,7 @@
 import { assertSpyCall, assertSpyCalls, spy } from "@std/testing/mock";
-import { MockFileSystemService } from "../../adapter/fileSystem/MockFileSystemService.ts";
-import { GIT_DIR } from "../../constants.ts";
-import { init } from "./index.ts";
+import { MockFileSystemService } from "../../../adapter/fileSystem/MockFileSystemService.ts";
+import { GIT_DIR, OBJECTS_DIR_PATH } from "../../../constants.ts";
+import { init, INIT_MESSAGE } from "./index.ts";
 
 Deno.test(
   "should create a new constent directory tracker repository when the --init flag is passed and the repository does not exist",
@@ -37,7 +37,7 @@ Deno.test(
     });
 
     assertSpyCall(spyCreateDirectory, 1, {
-      args: [`${GIT_DIR}/objects`],
+      args: [`${OBJECTS_DIR_PATH}`],
     });
 
     spyCreateDirectory.restore();
@@ -62,7 +62,7 @@ Deno.test(
 
     assertSpyCalls(spyConsoleLog, 1);
     assertSpyCall(spyConsoleLog, 0, {
-      args: ["Kiwi git repository already exists"],
+      args: [INIT_MESSAGE.alreadyExist],
     });
 
     spyCreateDirectory.restore();
