@@ -19,7 +19,7 @@ Deno.test("hashFile should correctly hash and store file content", async () => {
 
   const { mockFileSystem, mockHashService } = setupMockServices(
     testFilePath,
-    testFileContent
+    testFileContent,
   );
 
   const spyWriteFile = spy(mockFileSystem, "writeFile");
@@ -31,7 +31,7 @@ Deno.test("hashFile should correctly hash and store file content", async () => {
   const result = await hashObject(
     testFilePath,
     mockHashService,
-    mockFileSystem
+    mockFileSystem,
   );
 
   assertEquals(result, expectedHash);
@@ -63,7 +63,7 @@ Deno.test("hashFile should throw an error when the file is empty", async () => {
   await assertRejects(
     () => hashObject(testFilePath, mockHashService, mockFileSystem),
     Error,
-    `The file ${testFilePath} doesn't have any data to read`
+    `The file ${testFilePath} doesn't have any data to read`,
   );
 });
 
@@ -78,7 +78,7 @@ Deno.test(
     await assertRejects(
       () => hashObject(testFilePath, mockHashService, mockFileSystem),
       Error,
-      `File ${testFilePath} not found`
+      `File ${testFilePath} not found`,
     );
-  }
+  },
 );

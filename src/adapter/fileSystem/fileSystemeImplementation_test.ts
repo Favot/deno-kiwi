@@ -12,7 +12,7 @@ Deno.test("should create a directory", async () => {
   await assertRejects(
     () => createDirectoryService(mockFileSystem, directoryPath),
     Error,
-    `Directory ${directoryPath} already exists`
+    `Directory ${directoryPath} already exists`,
   );
 });
 
@@ -35,6 +35,6 @@ Deno.test("should throw an error if file not found", async () => {
   await assertRejects(
     () => readFile(mockFileSystem, filePath),
     Error,
-    `File ${filePath} not found`
+    `File ${filePath} not found`,
   );
 });

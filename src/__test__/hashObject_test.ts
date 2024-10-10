@@ -22,7 +22,7 @@ Deno.test(
     } finally {
       spyHashObject.restore();
     }
-  }
+  },
 );
 
 Deno.test(
@@ -46,5 +46,5 @@ Deno.test(
     spyHashObject.restore();
     spyConsoleLog.restore();
     spyConsoleError.restore();
-  }
+  },
 );

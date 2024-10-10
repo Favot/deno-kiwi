@@ -2,14 +2,14 @@ import type { FileSystemService } from "./FileSystemService.ts";
 
 export function createDirectoryService(
   fileSystem: FileSystemService,
-  directoryPath: string
+  directoryPath: string,
 ): Promise<void> {
   return fileSystem.createDirectory(directoryPath);
 }
 
 export function readFile(
   fileSystem: FileSystemService,
-  filePath: string
+  filePath: string,
 ): Promise<string> {
   return fileSystem.readFile(filePath);
 }
@@ -17,7 +17,7 @@ export function readFile(
 export function writeFile(
   fileSystem: FileSystemService,
   filePath: string,
-  content: Uint8Array
+  content: Uint8Array,
 ): Promise<void> {
   return fileSystem.writeFile(filePath, content);
 }
