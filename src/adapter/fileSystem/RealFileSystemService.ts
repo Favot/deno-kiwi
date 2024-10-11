@@ -33,4 +33,8 @@ export class RealFileSystemService implements FileSystemService {
       throw error;
     }
   }
+
+  readDir(directoryPath: string): AsyncIterable<Deno.DirEntry> {
+    return Deno.readDir(directoryPath);
+  }
 }
