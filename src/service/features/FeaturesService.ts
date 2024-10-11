@@ -13,4 +13,5 @@ export interface FeaturesService {
         objectId: string,
         fileSystem: FileSystemService,
     ): Promise<void>;
+    writeTree(): void;
 }

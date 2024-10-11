@@ -32,4 +32,8 @@ export class RealFeaturesService implements FeaturesService {
             fileSystem,
         );
     }
+
+    writeTree(): void {
+        return;
+    }
 }
