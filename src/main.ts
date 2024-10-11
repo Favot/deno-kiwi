@@ -50,6 +50,10 @@ export async function main({
       fileSystemService,
     );
   }
+
+  if (args.writeTree) {
+    featureService.writeTree();
+  }
 }
 
 main({ inputArgs: Deno.args });

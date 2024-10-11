@@ -39,6 +39,30 @@ export class MockFileSystemService implements FileSystemService {
     });
   }
 
+  async *readDir(directoryPath: string): AsyncIterable<Deno.DirEntry> {
+    for (const file of this.files.keys()) {
+      if (file.startsWith(directoryPath)) {
+        yield {
+          name: file.split("/").pop()!,
+          isFile: true,
+          isDirectory: false,
+          isSymlink: false,
+        };
+      }
+    }
+
+    for (const dir of this.directories) {
+      if (dir === directoryPath) {
+        yield {
+          name: dir.split("/").pop()!,
+          isFile: false,
+          isDirectory: true,
+          isSymlink: false,
+        };
+      }
+    }
+  }
+
   setFile(filePath: string, content: string): void {
     this.files.set(filePath, content);
   }
