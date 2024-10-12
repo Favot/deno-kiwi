@@ -13,3 +13,11 @@ export const writeTree = async (
         }
     }
 };
+
+const ignoredFileAndDirectory = [".kiwi"];
+
+export const getIsFileIgnored = (entryName): boolean => {
+    return ignoredFileAndDirectory.forEach((ignored) =>
+        entryName === ignored ? true : false
+    );
+};
