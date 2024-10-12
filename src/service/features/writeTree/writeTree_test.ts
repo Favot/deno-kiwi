@@ -15,10 +15,8 @@ Deno.test("Should scan the current directory and log the file path of each file"
         content: "file two content",
     };
 
-    // Create the directories
     await fileSysteme.createDirectory("./testDirectory");
 
-    // Set the files in the mock file system
     fileSysteme.setFile(fileOne.path, fileOne.content);
     fileSysteme.setFile(fileTwo.path, fileTwo.content);
 
@@ -55,14 +53,12 @@ Deno.test("should scan the current directory and not log the ignore files", asyn
     };
 
     const ignoreFile = {
-        path: "./testDirectory/.kiwi/ugitFile",
+        path: "./testDirectory/.kiwi",
         content: "ignore content",
     };
 
-    // Create the directories
     await fileSysteme.createDirectory("./testDirectory");
-    await fileSysteme.createDirectory("./.kiwi");
-    // Set the files in the mock file system
+
     fileSysteme.setFile(fileOne.path, fileOne.content);
     fileSysteme.setFile(fileTwo.path, fileTwo.content);
     fileSysteme.setFile(ignoreFile.path, ignoreFile.content);
