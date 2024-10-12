@@ -81,4 +81,10 @@ export class MockFileSystemService implements FileSystemService {
       DEFAULT_FILE_SYSTEME_VALUE.fileContent,
     );
   }
+
+  restore(): void {
+    this.files.clear();
+    this.directories.clear();
+    this.fileContents.clear();
+  }
 }
