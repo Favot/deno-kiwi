@@ -12,7 +12,8 @@ export const writeTree = async (
             return;
         }
         if (entry.isFile) {
-            console.log(fullPath);
+            const fileContent = await fileSystem.readFile(fullPath);
+            console.log(fileContent, fullPath);
         } else if (entry.isDirectory) {
             await writeTree(fullPath, fileSystem);
         }
