@@ -1,8 +1,6 @@
 import { assertEquals } from "@std/assert/equals";
-import { assertRejects } from "@std/assert/rejects";
 import { assertSpyCall, assertSpyCalls, spy } from "@std/testing/mock";
 import { MockFileSystemService } from "../../../adapter/fileSystem/MockFileSystemService.ts";
-import { MockHashService } from "../../hash/MockHashService.ts";
 import { RealHashService } from "../../hash/RealHashService.ts";
 import { hashObject } from "./hashObject.ts";
 
@@ -22,7 +20,7 @@ Deno.test("hashFile should correctly hash and store file content", async () => {
     "b5269447bc2afbefb353cbe7c50a1c8262d9b480864375b8ed68a7a6c1c1d9ce";
 
   const result = await hashObject(
-    testFilePath,
+    testFileContent,
     mockHashService,
     mockFileSystem,
   );
@@ -45,33 +43,3 @@ Deno.test("hashFile should correctly hash and store file content", async () => {
   spyWriteFile.restore();
   spyGenerateHash.restore();
 });
-
-Deno.test("hashFile should throw an error when the file is empty", async () => {
-  const mockFileSystem = new MockFileSystemService();
-  const mockHashService = new MockHashService();
-
-  const testFilePath = "/test/empty.txt";
-  mockFileSystem.setFile(testFilePath, "");
-
-  await assertRejects(
-    () => hashObject(testFilePath, mockHashService, mockFileSystem),
-    Error,
-    `The file ${testFilePath} doesn't have any data to read`,
-  );
-});
-
-Deno.test(
-  "hashFile should throw an error when the file does not exist",
-  async () => {
-    const mockFileSystem = new MockFileSystemService();
-    const mockHashService = new MockHashService();
-
-    const testFilePath = "/test/nonexistent.txt";
-
-    await assertRejects(
-      () => hashObject(testFilePath, mockHashService, mockFileSystem),
-      Error,
-      `File ${testFilePath} not found`,
-    );
-  },
-);
