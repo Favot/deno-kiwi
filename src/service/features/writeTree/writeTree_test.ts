@@ -27,6 +27,16 @@ const fileTwo = {
     databaseFileContnent: new TextEncoder().encode("blob\x00file two content"),
 };
 
+const fileThree = {
+    path: "./testDirectory/subDirectory/fileThree.ts",
+    content: "file three content",
+    objectID:
+        "381f18f987f1c0e3c7d6e53350baab46067ca2a665a814f249351c0c3caa360c",
+    databaseFileContnent: new TextEncoder().encode(
+        "blob\x00file three content",
+    ),
+};
+
 const ignoreFile = {
     path: "./testDirectory/.kiwi",
     content: "ignore content",
@@ -34,9 +44,11 @@ const ignoreFile = {
 
 Deno.test("Should scan the current directory and log the file ObjectId of each file", async () => {
     await fileSysteme.createDirectory("./testDirectory");
+    await fileSysteme.createDirectory("./testDirectory/subDirectory");
 
     fileSysteme.setFile(fileOne.path, fileOne.content);
     fileSysteme.setFile(fileTwo.path, fileTwo.content);
+    fileSysteme.setFile(fileThree.path, fileThree.content);
 
     const spyOnLog = spy(console, "log");
 
@@ -47,13 +59,17 @@ Deno.test("Should scan the current directory and log the file ObjectId of each f
         hashService,
     );
 
-    assertSpyCalls(spyOnLog, 2);
+    assertSpyCalls(spyOnLog, 3);
 
     assertSpyCall(spyOnLog, 0, {
         args: [`${fileOne.objectID}`, `${fileOne.path}`],
     });
     assertSpyCall(spyOnLog, 1, {
         args: [`${fileTwo.objectID}`, `${fileTwo.path}`],
+    });
+
+    assertSpyCall(spyOnLog, 2, {
+        args: [`${fileThree.objectID}`, `${fileThree.path}`],
     });
 
     spyOnLog.restore();
@@ -82,26 +98,32 @@ Deno.test("should scan the current directory and not log the ignore files", asyn
     fileSysteme.restore();
 });
 
-Deno.test("should scann the current directory and open each file", async () => {
-    await fileSysteme.createDirectory("./testDirectory");
+Deno.test(
+    "should scann the current directory and open each file",
+    async () => {
+        await fileSysteme.createDirectory("./testDirectory");
+        await fileSysteme.createDirectory("./testDirectory/subDirectory");
 
-    fileSysteme.setFile(fileOne.path, fileOne.content);
-    fileSysteme.setFile(fileTwo.path, fileTwo.content);
-    fileSysteme.setFile(ignoreFile.path, ignoreFile.content);
+        fileSysteme.setFile(fileOne.path, fileOne.content);
+        fileSysteme.setFile(fileTwo.path, fileTwo.content);
+        fileSysteme.setFile(fileThree.path, fileThree.content);
 
-    const spyOnReadFile = spy(fileSysteme, "readFile");
+        fileSysteme.setFile(ignoreFile.path, ignoreFile.content);
 
-    await writeTree(
-        "./testDirectory",
-        fileSysteme,
-        featureService,
-        hashService,
-    );
+        const spyOnReadFile = spy(fileSysteme, "readFile");
 
-    assertSpyCalls(spyOnReadFile, 2);
+        await writeTree(
+            "./testDirectory",
+            fileSysteme,
+            featureService,
+            hashService,
+        );
 
-    fileSysteme.restore();
-});
+        assertSpyCalls(spyOnReadFile, 3);
+
+        fileSysteme.restore();
+    },
+);
 
 Deno.test("should register each file in the the database using is object id", async () => {
     await fileSysteme.createDirectory("./testDirectory");
@@ -119,7 +141,7 @@ Deno.test("should register each file in the the database using is object id", as
         hashService,
     );
 
-    assertSpyCalls(spyOnWriteFile, 2);
+    assertSpyCalls(spyOnWriteFile, 3);
 
     assertSpyCall(spyOnWriteFile, 0, {
         args: [
