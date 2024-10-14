@@ -40,25 +40,35 @@ export class MockFileSystemService implements FileSystemService {
   }
 
   async *readDir(directoryPath: string): AsyncIterable<Deno.DirEntry> {
+    const directoryPathWithSlash = directoryPath.endsWith("/")
+      ? directoryPath
+      : `${directoryPath}/`;
+
     for (const file of this.files.keys()) {
-      if (file.startsWith(directoryPath)) {
-        yield {
-          name: file.split("/").pop()!,
-          isFile: true,
-          isDirectory: false,
-          isSymlink: false,
-        };
+      if (file.startsWith(directoryPathWithSlash)) {
+        const relativePath = file.slice(directoryPathWithSlash.length);
+        if (!relativePath.includes("/")) { // Ensure it's a direct child
+          yield {
+            name: relativePath,
+            isFile: true,
+            isDirectory: false,
+            isSymlink: false,
+          };
+        }
       }
     }
 
     for (const dir of this.directories) {
-      if (dir === directoryPath) {
-        yield {
-          name: dir.split("/").pop()!,
-          isFile: false,
-          isDirectory: true,
-          isSymlink: false,
-        };
+      if (dir.startsWith(directoryPathWithSlash)) {
+        const relativePath = dir.slice(directoryPathWithSlash.length);
+        if (!relativePath.includes("/")) { // Ensure it's a direct child
+          yield {
+            name: relativePath,
+            isFile: false,
+            isDirectory: true,
+            isSymlink: false,
+          };
+        }
       }
     }
   }
