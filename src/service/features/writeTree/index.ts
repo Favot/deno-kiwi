@@ -3,9 +3,8 @@ import type { ObjectType } from "../../../types/Object.ts";
 import type { HashService } from "../../hash/HashService.ts";
 import type { FeaturesService } from "../FeaturesService.ts";
 import { getIsFileIgnored } from "./ignoreFile.ts";
-import { stringifyEntry } from "./stringifyTree.ts";
 
-export type Tree = {
+export type Entrie = {
     type: ObjectType;
     name: string;
     objectId: string;
@@ -17,48 +16,50 @@ export const writeTree = async (
     featureService: FeaturesService,
     hashService: HashService,
 ): Promise<string> => {
-    const entries: Tree[] = [];
+    const entries: Entrie[] = [];
 
-    let currentPath = `${directory}`;
     for await (const entry of fileSystem.readDir(directory)) {
-        currentPath = `${currentPath}/${entry.name}`;
+        const currentPath = `${directory}/${entry.name}`;
 
         if (getIsFileIgnored(entry.name)) {
-            currentPath = `${directory}`;
             continue;
         }
-        if (entry.isFile) {
-            const fileContent = await fileSystem.readFile(currentPath);
 
-            const objectID = await featureService.hashObject(
+        let type: ObjectType;
+        let objectId: string;
+
+        if (entry.isFile) {
+            type = "blob";
+            const fileContent = await fileSystem.readFile(currentPath);
+            objectId = await featureService.hashObject(
                 fileContent,
                 hashService,
                 fileSystem,
                 "blob",
             );
 
-            console.log(objectID, currentPath);
-            currentPath = `${directory}`;
+            console.log(objectId, currentPath);
         } else if (entry.isDirectory) {
-            const objectId = await writeTree(
+            type = "tree";
+            objectId = await writeTree(
                 currentPath,
                 fileSystem,
                 featureService,
                 hashService,
             );
-
-            entries.push({
-                type: "tree",
-                name: entry.name,
-                objectId,
-            });
+        } else {
+            continue;
         }
+        entries.push({ name: entry.name, objectId, type });
     }
 
-    const tree = stringifyEntry(entries);
+    const tree = entries
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map(({ type, objectId, name }) => `${type} ${objectId} ${name}`)
+        .join("\n");
 
     return featureService.hashObject(
-        tree,
+        tree.toString(),
         hashService,
         fileSystem,
         "tree",

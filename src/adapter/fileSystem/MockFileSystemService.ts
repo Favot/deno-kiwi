@@ -97,4 +97,18 @@ export class MockFileSystemService implements FileSystemService {
     this.directories.clear();
     this.fileContents.clear();
   }
+
+  getState(): { files: Map<string, string>; directories: Set<string> } {
+    const decoder = new TextDecoder("utf-8");
+    const readableFiles = new Map<string, string>();
+
+    for (const [filePath, content] of this.fileContents.entries()) {
+      readableFiles.set(filePath, decoder.decode(content));
+    }
+
+    return {
+      files: readableFiles,
+      directories: new Set(this.directories),
+    };
+  }
 }
