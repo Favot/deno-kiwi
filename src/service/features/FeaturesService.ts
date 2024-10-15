@@ -1,13 +1,15 @@
 import type { FileSystemService } from "../../adapter/fileSystem/FileSystemService.ts";
+import type { ObjectType } from "../../types/Object.ts";
 import type { HashService } from "../hash/HashService.ts";
 
 export interface FeaturesService {
     init(fileSystem: FileSystemService): Promise<void>;
     printHelp(): void;
     hashObject(
-        filePath: string,
+        fileContent: string,
         hashService: HashService,
         fileSystem: FileSystemService,
+        objectType?: ObjectType,
     ): Promise<string>;
     catFile(
         objectId: string,

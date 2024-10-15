@@ -33,8 +33,10 @@ export async function main({
       return console.error("Missing file path for --hashObject flag");
     }
 
+    const fileContent = await fileSystemService.readFile(args.hashObject);
+
     return await featureService.hashObject(
-      args.hashObject,
+      fileContent,
       hashService,
       fileSystemService,
     );
