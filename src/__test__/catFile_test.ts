@@ -36,6 +36,7 @@ Deno.test(
             args: [
                 objectId,
                 mockFileSystem,
+                featuresService,
             ],
         });
     },

@@ -3,6 +3,7 @@ import { type ObjectType } from "../../types/Object.ts";
 import type { HashService } from "../hash/HashService.ts";
 import { catFile } from "./catFile/index.ts";
 import type { FeaturesService } from "./FeaturesService.ts";
+import { getObject } from "./getObject/getObject.ts";
 import { hashObject } from "./hashObject/hashObject.ts";
 import { printHelp } from "./help/index.ts";
 import { init } from "./init/index.ts";
@@ -29,11 +30,21 @@ export class RealFeaturesService implements FeaturesService {
     catFile(
         objectId: string,
         fileSystem: FileSystemService,
+        featureService: FeaturesService,
     ): Promise<void> {
         return catFile(
             objectId,
             fileSystem,
+            featureService,
         );
+    }
+
+    getObject(
+        objectId: string,
+        fileSystem: FileSystemService,
+        expectedType: ObjectType,
+    ): Promise<string> {
+        return getObject(objectId, fileSystem, expectedType);
     }
 
     writeTree(
