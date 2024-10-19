@@ -11,10 +11,17 @@ export interface FeaturesService {
         fileSystem: FileSystemService,
         objectType?: ObjectType,
     ): Promise<string>;
+
     catFile(
         objectId: string,
         fileSystem: FileSystemService,
+        featureService: FeaturesService,
     ): Promise<void>;
+    getObject(
+        objectId: string,
+        fileSystem: FileSystemService,
+        expectedType: ObjectType,
+    ): Promise<string>;
     writeTree(
         fileSystem: FileSystemService,
         featureService: FeaturesService,

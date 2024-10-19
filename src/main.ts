@@ -50,6 +50,7 @@ export async function main({
     return await featureService.catFile(
       args.catFile,
       fileSystemService,
+      featureService,
     );
   }
 
