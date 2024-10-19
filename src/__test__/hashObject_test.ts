@@ -28,7 +28,7 @@ Deno.test(
     assertSpyCalls(spyHashObject, 1);
     assertSpyCall(spyHashObject, 0, {
       args: [
-        DEFAULT_FILE_SYSTEME_VALUE.fileName,
+        DEFAULT_FILE_SYSTEME_VALUE.fileContent,
         mockHashService,
         mockFileSystem,
       ],

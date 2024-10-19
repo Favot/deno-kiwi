@@ -4,16 +4,11 @@ import type { ObjectType } from "../../../types/Object.ts";
 import type { HashService } from "../../hash/HashService.ts";
 
 export const hashObject = async (
-  filePath: string,
+  fileContent: string,
   hashService: HashService,
   fileSystem: FileSystemService,
   objectType: ObjectType = "blob",
 ): Promise<string> => {
-  const fileContent = await fileSystem.readFile(filePath);
-
-  if (!fileContent) {
-    throw new Error(`The file ${filePath} doesn't have any data to read`);
-  }
   const object = `${objectType}\x00${fileContent}`;
 
   const objectId = await hashService.generateHash(object, HASH_ALGORITHM);
@@ -26,7 +21,7 @@ export const hashObject = async (
     return objectId;
   } catch (error) {
     if (error instanceof Deno.errors.NotFound) {
-      throw new Error(`File ${filePath} not found`);
+      throw new Error(`File not found`);
     }
 
     if (error instanceof Deno.errors.PermissionDenied) {
