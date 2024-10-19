@@ -6,6 +6,7 @@ import type { FeaturesService } from "./FeaturesService.ts";
 import { hashObject } from "./hashObject/hashObject.ts";
 import { printHelp } from "./help/index.ts";
 import { init } from "./init/index.ts";
+import { writeTree } from "./writeTree/index.ts";
 
 export class RealFeaturesService implements FeaturesService {
     init = (fileSystem: FileSystemService): Promise<void> => {
@@ -35,7 +36,16 @@ export class RealFeaturesService implements FeaturesService {
         );
     }
 
-    writeTree(): void {
-        return;
+    writeTree(
+        fileSystem: FileSystemService,
+        featureService: FeaturesService,
+        hashService: HashService,
+    ): Promise<string> {
+        return writeTree(
+            "./",
+            fileSystem,
+            featureService,
+            hashService,
+        );
     }
 }
