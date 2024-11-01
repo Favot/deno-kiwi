@@ -1,10 +1,12 @@
 import { assert } from "@std/assert/assert";
 import {
-    MockFileSystemService,
-    testDirectoryPath,
+    TEST_DIRECTORY_PATH,
     testFileOne,
     testFileThree,
     testFileTwo,
+} from "../../../adapter/fileSystem/mockData.ts";
+import {
+    MockFileSystemService,
 } from "../../../adapter/fileSystem/MockFileSystemService.ts";
 import { emptyCurrentDirectory } from "./emptyCurrentDirectory.ts";
 
@@ -19,7 +21,7 @@ Deno.test("should empty the current directory except the ignored files and direc
 
     assertFileExists(
         createdFiles,
-        `${testDirectoryPath}/ignoredFile.ts`,
+        `${TEST_DIRECTORY_PATH}/ignoredFile.ts`,
         "ignored file content",
     );
 

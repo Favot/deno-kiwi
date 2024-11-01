@@ -31,6 +31,7 @@ export const writeTree = async (
         if (entry.isFile) {
             type = "blob";
             const fileContent = await fileSystem.readFile(currentPath);
+
             objectId = await featureService.hashObject(
                 fileContent,
                 hashService,
@@ -59,7 +60,7 @@ export const writeTree = async (
         .join("\n");
 
     return featureService.hashObject(
-        tree.toString(),
+        `${tree}\n`,
         hashService,
         fileSystem,
         "tree",
