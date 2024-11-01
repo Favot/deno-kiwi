@@ -61,6 +61,15 @@ export async function main({
       hashService,
     );
   }
+
+  if (args.readTree) {
+    featureService.readTree(
+      fileSystemService,
+      featureService,
+      args.readTree,
+      "./",
+    );
+  }
 }
 
 main({ inputArgs: Deno.args });

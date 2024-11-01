@@ -7,6 +7,7 @@ import { getObject } from "./getObject/getObject.ts";
 import { hashObject } from "./hashObject/hashObject.ts";
 import { printHelp } from "./help/index.ts";
 import { init } from "./init/index.ts";
+import { readTree } from "./readTree/readTree.ts";
 import { writeTree } from "./writeTree/index.ts";
 
 export class RealFeaturesService implements FeaturesService {
@@ -59,4 +60,18 @@ export class RealFeaturesService implements FeaturesService {
             hashService,
         );
     }
+
+    readTree = (
+        fileSystem: FileSystemService,
+        featureService: FeaturesService,
+        objectId: string,
+        workingDirectory: string,
+    ): Promise<void> => {
+        return readTree(
+            fileSystem,
+            featureService,
+            objectId,
+            workingDirectory,
+        );
+    };
 }

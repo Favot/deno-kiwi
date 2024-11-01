@@ -27,4 +27,11 @@ export interface FeaturesService {
         featureService: FeaturesService,
         hashService: HashService,
     ): Promise<string>;
+
+    readTree(
+        fileSystem: FileSystemService,
+        featureService: FeaturesService,
+        objectId: string,
+        workingDirectory: string,
+    ): Promise<void>;
 }
