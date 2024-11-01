@@ -1,5 +1,5 @@
-const ignoredFile = [".kiwi"];
+const ignoredFile = [".kiwi", "ignoredFile.ts"];
 
-export const getIsFileIgnored = (entryName: string): boolean => {
+export const getIsIgnored = (entryName: string): boolean => {
     return ignoredFile.includes(entryName); // Check if entryName is in the ignored list
 };

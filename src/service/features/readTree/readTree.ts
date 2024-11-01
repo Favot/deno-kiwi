@@ -1,5 +1,6 @@
 import type { FileSystemService } from "../../../adapter/fileSystem/FileSystemService.ts";
 import type { FeaturesService } from "../FeaturesService.ts";
+import { emptyCurrentDirectory } from "./emptyCurrentDirectory.ts";
 import { getTree } from "./getTree.ts";
 
 export const readTree = async (
@@ -14,6 +15,8 @@ export const readTree = async (
         objectId,
         workingDirectory,
     );
+
+    emptyCurrentDirectory(fileSystem, workingDirectory);
 
     for (const [filePath, objectId] of Object.entries(tree)) {
         const filePathInWorkingDirectory = `${filePath}`;

@@ -37,4 +37,12 @@ export class RealFileSystemService implements FileSystemService {
   readDir(directoryPath: string): AsyncIterable<Deno.DirEntry> {
     return Deno.readDir(directoryPath);
   }
+
+  deleteFile(filePath: string): Promise<void> {
+    return Deno.remove(filePath);
+  }
+
+  remove(path: string): Promise<void> {
+    return Deno.remove(path);
+  }
 }
