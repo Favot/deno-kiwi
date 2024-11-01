@@ -7,7 +7,7 @@ type FileContent = {
   path: string;
 };
 
-const testDirectoryPath = "./testDirectory";
+export const testDirectoryPath = "./testDirectory";
 
 export const testFileOne: FileContent = {
   path: `${testDirectoryPath}/testDirectory/fileOne.ts`,
@@ -25,6 +25,12 @@ export const testFileThree: FileContent = {
   path: `${testDirectoryPath}/testDirectory/subDirectory/fileThree.ts`,
   content: "file three content",
   objectId: "381f18f987f1c0e3c7d6e53350baab46067ca2a665a814f249351c0c3caa360c",
+};
+
+export const ignoredFile: FileContent = {
+  path: `${testDirectoryPath}/ignoredFile.ts`,
+  content: "ignored file content",
+  objectId: "ignoredFile",
 };
 
 export const DEFAULT_FILE_SYSTEME_VALUE = {
@@ -100,6 +106,21 @@ export class MockFileSystemService implements FileSystemService {
     }
   }
 
+  deleteFile(filePath: string): Promise<void> {
+    return new Promise((resolve, _reject) => {
+      this.files.delete(filePath);
+      this.fileContents.delete(filePath);
+      resolve();
+    });
+  }
+
+  remove(path: string): Promise<void> {
+    return new Promise((resolve, _reject) => {
+      this.directories.delete(path);
+      resolve();
+    });
+  }
+
   setFile(filePath: string, content: string): void {
     this.files.set(filePath, content);
   }
@@ -169,7 +190,7 @@ export class MockFileSystemService implements FileSystemService {
 
     this.setTestDirectory();
 
-    this.setTestFiles([testFileOne, testFileTwo, testFileThree]);
+    this.setTestFiles([testFileOne, testFileTwo, testFileThree, ignoredFile]);
   }
 
   setTestDatabaseFiles(): void {
