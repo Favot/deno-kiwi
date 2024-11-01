@@ -3,12 +3,12 @@ import {
     fileOneData,
     fileThreeData,
     fileTwoData,
-    MockFileSystemService,
     testFileOneDatabaseFile,
     testFileThreeDatabaseFile,
     testFileTwoDatabaseFile,
     topTreeObjectId,
-} from "../../../adapter/fileSystem/MockFileSystemService.ts";
+} from "../../../adapter/fileSystem/mockData.ts";
+import { MockFileSystemService } from "../../../adapter/fileSystem/MockFileSystemService.ts";
 import { RealFeaturesService } from "../RealFeatureService.ts";
 import { getTree } from "./getTree.ts";
 

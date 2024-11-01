@@ -1,9 +1,8 @@
 import { assertEquals } from "@std/assert/equals";
 import { assertSpyCall, assertSpyCalls, spy } from "@std/testing/mock";
 import {
-    MockFileSystemService,
     subTreeDatabaseFile,
-    testDirectoryPath,
+    TEST_DIRECTORY_PATH,
     testFileOne,
     testFileOneDatabaseFile,
     testFileThree,
@@ -11,6 +10,9 @@ import {
     testFileTwo,
     testFileTwoDatabaseFile,
     topTreeDatabaseFile,
+} from "../../../adapter/fileSystem/mockData.ts";
+import {
+    MockFileSystemService,
 } from "../../../adapter/fileSystem/MockFileSystemService.ts";
 import { OBJECTS_DIR_PATH } from "../../../constants.ts";
 import { RealHashService } from "../../hash/RealHashService.ts";
@@ -88,7 +90,7 @@ Deno.test(
         mockFileSysteme.setTestProject();
 
         await writeTree(
-            testDirectoryPath,
+            TEST_DIRECTORY_PATH,
             mockFileSysteme,
             featureService,
             hashService,

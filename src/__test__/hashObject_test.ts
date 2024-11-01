@@ -1,6 +1,6 @@
 import { assertSpyCall, assertSpyCalls, spy } from "@std/testing/mock";
+import { DEFAULT_FILE_SYSTEME_VALUE } from "../adapter/fileSystem/mockData.ts";
 import {
-  DEFAULT_FILE_SYSTEME_VALUE,
   MockFileSystemService,
 } from "../adapter/fileSystem/MockFileSystemService.ts";
 import { main } from "../main.ts";
