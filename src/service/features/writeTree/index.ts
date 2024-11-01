@@ -2,7 +2,7 @@ import type { FileSystemService } from "../../../adapter/fileSystem/FileSystemSe
 import type { ObjectType } from "../../../types/Object.ts";
 import type { HashService } from "../../hash/HashService.ts";
 import type { FeaturesService } from "../FeaturesService.ts";
-import { getIsFileIgnored } from "./ignoreFile.ts";
+import { getIsIgnored } from "./ignoreFile.ts";
 
 export type Entrie = {
     type: ObjectType;
@@ -21,7 +21,7 @@ export const writeTree = async (
     for await (const entry of fileSystem.readDir(directory)) {
         const currentPath = `${directory}/${entry.name}`;
 
-        if (getIsFileIgnored(entry.name)) {
+        if (getIsIgnored(entry.name)) {
             continue;
         }
 
