@@ -44,7 +44,7 @@ Deno.test("getTree should correctly parse a tree structure with multiple entries
     const mockFileSystem = createMockFileSystem();
     const mockFeatureService = createMockFeatureService();
 
-    mockFileSystem.setTestDatabaseFiles();
+    mockFileSystem.setTestProjectWithDatabaseFiles();
 
     const result = await getTree(
         mockFileSystem,
