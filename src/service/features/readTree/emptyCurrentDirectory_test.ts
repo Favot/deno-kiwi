@@ -17,19 +17,16 @@ Deno.test("should empty the current directory except the ignored files and direc
     const { files: createdFiles, directories: directoryEntries } =
         mockFileSystem.getState();
 
-    // Check ignored file
     assertFileExists(
         createdFiles,
         `${testDirectoryPath}/ignoredFile.ts`,
         "ignored file content",
     );
 
-    // Check that fileOne, fileTwo, and fileThree are not in the current directory
     assertFileNotExists(createdFiles, testFileOne.path);
-    assertFileNotExists(createdFiles, testFileTwo.path); // Replace with actual path
-    assertFileNotExists(createdFiles, testFileThree.path); // Replace with actual path
+    assertFileNotExists(createdFiles, testFileTwo.path);
+    assertFileNotExists(createdFiles, testFileThree.path);
 
-    // Check subDirectory absence
     assertDirectoryNotExists(
         directoryEntries,
         "./testDirectory/testDirectory/subDirectory",
