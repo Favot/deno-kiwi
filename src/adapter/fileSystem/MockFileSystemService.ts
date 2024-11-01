@@ -1,28 +1,30 @@
+import { OBJECTS_DIR_PATH } from "../../constants.ts";
 import type { FileSystemService } from "./FileSystemService.ts";
 
-export const testFileOne = {
-  path: "./testDirectory/fileOne.ts",
+type FileContent = {
+  content: string;
+  objectId: string;
+  path: string;
+};
+
+const testDirectoryPath = "./testDirectory";
+
+export const testFileOne: FileContent = {
+  path: `${testDirectoryPath}/testDirectory/fileOne.ts`,
   content: "file one content",
   objectId: "03d831fc8587d8d871eae4a3417034bc3556d577a30f9b69be52ea48c463e347",
-  databaseFileContnent: new TextEncoder().encode(
-    "blob\x00file one content",
-  ),
 };
 
-export const testFileTwo = {
-  path: "./testDirectory/fileTwo.ts",
+export const testFileTwo: FileContent = {
+  path: `${testDirectoryPath}/testDirectory/fileTwo.ts`,
   content: "file two content",
-  objectID: "8f266486ae7d7587ca09364b606d691fe250f6672ef8382f8e7166fa852feff1",
-  databaseFileContnent: new TextEncoder().encode("blob\x00file two content"),
+  objectId: "8f266486ae7d7587ca09364b606d691fe250f6672ef8382f8e7166fa852feff1",
 };
 
-export const testFileThree = {
-  path: "./testDirectory/subDirectory/fileThree.ts",
+export const testFileThree: FileContent = {
+  path: `${testDirectoryPath}/testDirectory/subDirectory/fileThree.ts`,
   content: "file three content",
-  objectID: "381f18f987f1c0e3c7d6e53350baab46067ca2a665a814f249351c0c3caa360c",
-  databaseFileContnent: new TextEncoder().encode(
-    "blob\x00file three content",
-  ),
+  objectId: "381f18f987f1c0e3c7d6e53350baab46067ca2a665a814f249351c0c3caa360c",
 };
 
 export const DEFAULT_FILE_SYSTEME_VALUE = {
@@ -31,8 +33,8 @@ export const DEFAULT_FILE_SYSTEME_VALUE = {
 };
 
 export class MockFileSystemService implements FileSystemService {
-  private files: Map<string, string> = new Map();
   private directories: Set<string> = new Set();
+  private files: Map<string, string> = new Map();
   private fileContents: Map<string, Uint8Array> = new Map();
 
   createDirectory(directoryPath: string): Promise<void> {
@@ -106,10 +108,6 @@ export class MockFileSystemService implements FileSystemService {
     this.directories.add(directoryPath);
   }
 
-  setFileContent(filePath: string, content: Uint8Array): void {
-    this.fileContents.set(filePath, content);
-  }
-
   setDefaultFileContent(): void {
     this.files.set(
       DEFAULT_FILE_SYSTEME_VALUE.fileName,
@@ -137,29 +135,67 @@ export class MockFileSystemService implements FileSystemService {
     };
   }
 
-  setTestProject(): void {
+  setFileContent = ({
+    content,
+    objectId,
+    path = `${OBJECTS_DIR_PATH}/${objectId}`,
+  }: {
+    content: string;
+    objectId: string;
+    path?: string;
+  }) => {
+    this.setFile(path, content);
+    this.writeFile(path, new TextEncoder().encode(content));
+  };
+
+  setKiwiDirectory = () => {
     this.createDirectory("./.kiwi");
     this.createDirectory("./.kiwi/objects");
-    this.createDirectory("./testDirectory");
-    this.createDirectory("./testDirectory/subDirectory");
+  };
 
-    this.setFile(testFileOne.path, testFileOne.content);
-    this.writeFile(
-      testFileOne.path,
-      new TextEncoder().encode(testFileOne.content),
-    );
+  setTestDirectory = () => {
+    this.createDirectory(`${testDirectoryPath}/testDirectory`);
+    this.createDirectory(`${testDirectoryPath}/testDirectory/subDirectory`);
+  };
 
-    this.setFile(testFileTwo.path, testFileTwo.content);
-    this.writeFile(
-      testFileTwo.path,
-      new TextEncoder().encode(testFileTwo.content),
-    );
+  setTestFiles = (testFiles: FileContent[]) => {
+    testFiles.forEach((fileContent) => {
+      this.setFileContent(fileContent);
+    });
+  };
 
-    this.setFile(testFileThree.path, testFileThree.content);
-    this.setFile(testFileThree.path, testFileThree.content);
-    this.writeFile(
-      testFileThree.path,
-      new TextEncoder().encode(testFileThree.content),
-    );
+  setTestProject(): void {
+    this.setKiwiDirectory();
+
+    this.setTestDirectory();
+
+    this.setTestFiles([testFileOne, testFileTwo, testFileThree]);
+  }
+
+  setTestDatabaseFiles(): void {
+    const topTreeFile: FileContent = {
+      objectId: "1234567890abcdef1234567890abcdef",
+      path: `${OBJECTS_DIR_PATH}/1234567890abcdef1234567890abcdef`,
+      content:
+        "tree\x00blob 4b5c38392a132ecf986c17feee35e88dd34fb788a3231d780dbb3c049ef61704 file1.txt\n" +
+        "blob 960bab35839f6a735c37493bc013066b608416c76be63a0577f4eb08b9112333 file2.txt\n" +
+        "tree 960bab35839f6a735c37493bc013066b608416c76be63a0577f4eb08b9112325 subdir",
+    };
+
+    const subTreeFile: FileContent = {
+      objectId:
+        "960bab35839f6a735c37493bc013066b608416c76be63a0577f4eb08b9112325",
+      path:
+        `${OBJECTS_DIR_PATH}/960bab35839f6a735c37493bc013066b608416c76be63a0577f4eb08b9112325`,
+      content:
+        "tree\x00blob 960bab35839f6a735c37493bc013066b608416c76be63a0577f4eb08b91123123 file3.txt",
+    };
+
+    this.setTestFiles([topTreeFile, subTreeFile]);
+  }
+
+  setTestProjectWithDatabaseFiles(): void {
+    this.setKiwiDirectory();
+    this.setTestDatabaseFiles();
   }
 }

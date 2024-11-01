@@ -1,6 +1,5 @@
 import { assert } from "@std/assert/assert";
 import { MockFileSystemService } from "../../../adapter/fileSystem/MockFileSystemService.ts";
-import { OBJECTS_DIR_PATH } from "../../../constants.ts";
 import { RealFeaturesService } from "../RealFeatureService.ts";
 import { getTree } from "./getTree.ts";
 
@@ -8,16 +7,6 @@ const topTreeObjectId = "1234567890abcdef1234567890abcdef";
 
 const createMockFileSystem = () => new MockFileSystemService();
 const createMockFeatureService = () => new RealFeaturesService();
-
-const setFileContent = (
-    mockFileSystem: MockFileSystemService,
-    content: string,
-    objectId: string = topTreeObjectId,
-) => {
-    const filePath = `${OBJECTS_DIR_PATH}/${objectId}`;
-    mockFileSystem.setFile(filePath, content);
-    mockFileSystem.writeFile(filePath, new TextEncoder().encode(content));
-};
 
 Deno.test("getTree should correctly parse a tree structure with multiple entries with only blobs", async () => {
     const mockFileSystem = createMockFileSystem();
@@ -27,7 +16,10 @@ Deno.test("getTree should correctly parse a tree structure with multiple entries
         "tree\x00blob 4b5c38392a132ecf986c17feee35e88dd34fb788a3231d780dbb3c049ef61704 file1.txt\n" +
         "blob 960bab35839f6a735c37493bc013066b608416c76be63a0577f4eb08b9112325 file2.txt";
 
-    setFileContent(mockFileSystem, treeContent);
+    mockFileSystem.setFileContent({
+        content: treeContent,
+        objectId: topTreeObjectId,
+    });
 
     const result = await getTree(
         mockFileSystem,
@@ -52,20 +44,7 @@ Deno.test("getTree should correctly parse a tree structure with multiple entries
     const mockFileSystem = createMockFileSystem();
     const mockFeatureService = createMockFeatureService();
 
-    const topTreeContent =
-        "tree\x00blob 4b5c38392a132ecf986c17feee35e88dd34fb788a3231d780dbb3c049ef61704 file1.txt\n" +
-        "blob 960bab35839f6a735c37493bc013066b608416c76be63a0577f4eb08b9112333 file2.txt\n" +
-        "tree 960bab35839f6a735c37493bc013066b608416c76be63a0577f4eb08b9112325 subdir";
-
-    const subTreeContent =
-        "tree\x00blob 960bab35839f6a735c37493bc013066b608416c76be63a0577f4eb08b91123123 file3.txt";
-
-    setFileContent(mockFileSystem, topTreeContent, topTreeObjectId);
-
-    const subDirObjectId =
-        "960bab35839f6a735c37493bc013066b608416c76be63a0577f4eb08b9112325";
-
-    setFileContent(mockFileSystem, subTreeContent, subDirObjectId);
+    mockFileSystem.setTestProjectWithDatabaseFiles();
 
     const result = await getTree(
         mockFileSystem,

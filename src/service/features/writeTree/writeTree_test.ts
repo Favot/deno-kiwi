@@ -33,11 +33,11 @@ Deno.test("Should scan the current directory and log the file ObjectId of each f
         args: [`${testFileOne.objectId}`, `${testFileOne.path}`],
     });
     assertSpyCall(spyOnLog, 1, {
-        args: [`${testFileTwo.objectID}`, `${testFileTwo.path}`],
+        args: [`${testFileTwo.objectId}`, `${testFileTwo.path}`],
     });
 
     assertSpyCall(spyOnLog, 2, {
-        args: [`${testFileThree.objectID}`, `${testFileThree.path}`],
+        args: [`${testFileThree.objectId}`, `${testFileThree.path}`],
     });
 
     spyOnLog.restore();
@@ -76,9 +76,9 @@ Deno.test(
             hashService,
         );
 
-        const state = mockFileSysteme.getState();
+        const fileSystemeState = mockFileSysteme.getState();
 
-        const createdFiles = Array.from(state.files.entries());
+        const createdFiles = Array.from(fileSystemeState.files.entries());
 
         const fileOneDatabaseFile = createdFiles[3];
 
@@ -91,14 +91,14 @@ Deno.test(
         const fileTwoDatabaseFile = createdFiles[4];
         assertEquals(
             fileTwoDatabaseFile[0],
-            `${OBJECTS_DIR_PATH}/${testFileTwo.objectID}`,
+            `${OBJECTS_DIR_PATH}/${testFileTwo.objectId}`,
         );
         assertEquals(fileTwoDatabaseFile[1], "blob\x00file two content");
 
         const fileThreeDatabaseFile = createdFiles[5];
         assertEquals(
             fileThreeDatabaseFile[0],
-            `${OBJECTS_DIR_PATH}/${testFileThree.objectID}`,
+            `${OBJECTS_DIR_PATH}/${testFileThree.objectId}`,
         );
         assertEquals(fileThreeDatabaseFile[1], "blob\x00file three content");
 
