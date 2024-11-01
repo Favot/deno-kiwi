@@ -21,6 +21,10 @@ export const getTree = async (
     }
 
     for (const { type, objectId: id, name } of entries) {
+        if (!name) {
+            continue;
+        }
+
         if (name.includes("/")) {
             throw new Error(`Invalid name: ${name}`);
         }

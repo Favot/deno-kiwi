@@ -1,9 +1,16 @@
 import { assert } from "@std/assert/assert";
-import { MockFileSystemService } from "../../../adapter/fileSystem/MockFileSystemService.ts";
+import {
+    fileOneData,
+    fileThreeData,
+    fileTwoData,
+    MockFileSystemService,
+    testFileOneDatabaseFile,
+    testFileThreeDatabaseFile,
+    testFileTwoDatabaseFile,
+    topTreeObjectId,
+} from "../../../adapter/fileSystem/MockFileSystemService.ts";
 import { RealFeaturesService } from "../RealFeatureService.ts";
 import { getTree } from "./getTree.ts";
-
-const topTreeObjectId = "1234567890abcdef1234567890abcdef";
 
 const createMockFileSystem = () => new MockFileSystemService();
 const createMockFeatureService = () => new RealFeaturesService();
@@ -54,16 +61,16 @@ Deno.test("getTree should correctly parse a tree structure with multiple entries
 
     assert(result !== null);
     assert(
-        result["file1.txt"] ===
-            "4b5c38392a132ecf986c17feee35e88dd34fb788a3231d780dbb3c049ef61704",
+        result[fileOneData.name] ===
+            testFileOneDatabaseFile.objectId,
     );
     assert(
-        result["file2.txt"] ===
-            "960bab35839f6a735c37493bc013066b608416c76be63a0577f4eb08b9112333",
+        result[fileTwoData.name] ===
+            testFileTwoDatabaseFile.objectId,
     );
     assert(
-        result["subdir/file3.txt"] ===
-            "960bab35839f6a735c37493bc013066b608416c76be63a0577f4eb08b91123123",
+        result[`subdir/${fileThreeData.name}`] ===
+            testFileThreeDatabaseFile.objectId,
     );
 
     mockFileSystem.restore();
