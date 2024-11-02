@@ -70,6 +70,14 @@ export async function main({
       "./",
     );
   }
+
+  if (args.commit) {
+    featureService.commit(
+      fileSystemService,
+      featureService,
+      hashService,
+    );
+  }
 }
 
 main({ inputArgs: Deno.args });

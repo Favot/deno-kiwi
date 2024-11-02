@@ -34,4 +34,9 @@ export interface FeaturesService {
         objectId: string,
         workingDirectory: string,
     ): Promise<void>;
+    commit(
+        fileSystem: FileSystemService,
+        featureService: FeaturesService,
+        hashService: HashService,
+    ): Promise<void>;
 }

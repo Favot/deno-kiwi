@@ -74,4 +74,13 @@ export class RealFeaturesService implements FeaturesService {
             workingDirectory,
         );
     };
+
+    commit = (
+        _fileSystem: FileSystemService,
+        _featureService: FeaturesService,
+        _hashService: HashService,
+    ): Promise<void> => {
+        // TODO: Implement commit function
+        return Promise.resolve();
+    };
 }

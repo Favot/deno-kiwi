@@ -53,4 +53,12 @@ export class MockFeatureService implements FeaturesService {
     ): Promise<void> => {
         return Promise.resolve();
     };
+
+    commit(
+        _fileSystem: FileSystemService,
+        _featureService: FeaturesService,
+        _hashService: HashService,
+    ): Promise<void> {
+        return Promise.resolve();
+    }
 }
