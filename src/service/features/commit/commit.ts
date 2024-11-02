@@ -1,6 +1,7 @@
 import type { FileSystemService } from "../../../adapter/fileSystem/FileSystemService.ts";
 import type { HashService } from "../../hash/HashService.ts";
 import type { FeaturesService } from "../FeaturesService.ts";
+import { setHead } from "./setHead.ts";
 
 export const commit = async (
     fileSystem: FileSystemService,
@@ -9,21 +10,25 @@ export const commit = async (
     commitMessage: string,
     directoryPath: string = "./",
 ) => {
-    const commitId = await featureService.writeTree(
+    const currentTreeId = await featureService.writeTree(
         directoryPath,
         fileSystem,
         featureService,
         hashService,
     );
 
-    const commitFileContent = `${commitId}\n` +
+    const commitFileContent = `${currentTreeId}\n` +
         `\n` +
         `${commitMessage}\n`;
 
-    return featureService.hashObject(
+    const commitId = await featureService.hashObject(
         commitFileContent,
         hashService,
         fileSystem,
         "tree",
     );
+
+    await setHead(fileSystem, commitId);
+
+    return commitId;
 };
