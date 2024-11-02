@@ -56,6 +56,7 @@ export async function main({
 
   if (args.writeTree) {
     featureService.writeTree(
+      "./",
       fileSystemService,
       featureService,
       hashService,

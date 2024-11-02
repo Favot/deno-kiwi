@@ -38,6 +38,7 @@ export class MockFeatureService implements FeaturesService {
     }
 
     writeTree(
+        _directoryPath: string,
         _fileSystem: FileSystemService,
         _featureService: FeaturesService,
         _hashService: HashService,

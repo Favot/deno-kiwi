@@ -49,12 +49,13 @@ export class RealFeaturesService implements FeaturesService {
     }
 
     writeTree(
+        directoryPath: string = "./",
         fileSystem: FileSystemService,
         featureService: FeaturesService,
         hashService: HashService,
     ): Promise<string> {
         return writeTree(
-            "./",
+            directoryPath,
             fileSystem,
             featureService,
             hashService,
