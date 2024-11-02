@@ -1,7 +1,7 @@
 import type { FileSystemService } from "../../../adapter/fileSystem/FileSystemService.ts";
 import type { HashService } from "../../hash/HashService.ts";
 import type { FeaturesService } from "../FeaturesService.ts";
-import { setHead } from "./setHead.ts";
+import { getHead, setHead } from "./setHead.ts";
 
 export const commit = async (
     fileSystem: FileSystemService,
@@ -17,9 +17,14 @@ export const commit = async (
         hashService,
     );
 
-    const commitFileContent = `${currentTreeId}\n` +
-        `\n` +
-        `${commitMessage}\n`;
+    const headContent = await getHead(fileSystem);
+
+    let commitFileContent = `${currentTreeId}\n`;
+    if (headContent.length > 0) {
+        commitFileContent += `parent\x00${headContent}\n`;
+    }
+    commitFileContent += `\n`;
+    commitFileContent += `${commitMessage}\n`;
 
     const commitId = await featureService.hashObject(
         commitFileContent,

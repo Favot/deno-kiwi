@@ -4,10 +4,12 @@ import {
     commitFileObjectId,
     headFileData,
     mockCommitFile,
+    mockCommitFileWithHead,
+    mockCommitFileWithHeadId,
     TEST_DIRECTORY_PATH,
 } from "../../../adapter/fileSystem/mockData.ts";
 import { MockFileSystemService } from "../../../adapter/fileSystem/MockFileSystemService.ts";
-import { OBJECTS_DIR_PATH } from "../../../constants.ts";
+import { GIT_DIR } from "../../../constants.ts";
 import { RealHashService } from "../../hash/RealHashService.ts";
 import { RealFeaturesService } from "../RealFeatureService.ts";
 import { commit } from "./commit.ts";
@@ -61,8 +63,40 @@ Deno.test("Should set the HAD to the commit object id", async () => {
 
     assertFileExists(
         fileSystemState.files,
-        `${OBJECTS_DIR_PATH}/${headFileData.name}`,
+        `${GIT_DIR}/${headFileData.name}`,
         headFileData.content,
+    );
+});
+
+Deno.test("Should had the Head id in the commit file when the commit function is called", async () => {
+    const hashService = new RealHashService();
+    const mockFeatureService = new RealFeaturesService();
+
+    const mockFileSystem = new MockFileSystemService();
+
+    mockFileSystem.setTestProject();
+    mockFileSystem.setFile(
+        `${GIT_DIR}/${headFileData.name}`,
+        headFileData.content,
+    );
+
+    const commitMessage = "Commit message";
+    const commitId = await commit(
+        mockFileSystem,
+        mockFeatureService,
+        hashService,
+        commitMessage,
+        TEST_DIRECTORY_PATH,
+    );
+
+    assertEquals(commitId, mockCommitFileWithHeadId);
+
+    const fileSystemState = mockFileSystem.getState();
+
+    assertFileExists(
+        fileSystemState.files,
+        mockCommitFileWithHead.path,
+        mockCommitFileWithHead.content,
     );
 });
 
