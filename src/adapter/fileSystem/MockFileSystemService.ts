@@ -144,8 +144,14 @@ export class MockFileSystemService implements FileSystemService {
   };
 
   setKiwiDirectory = () => {
-    this.createDirectory("./.kiwi");
-    this.createDirectory("./.kiwi/objects");
+    this.createDirectory(".kiwi");
+    this.createDirectory(".kiwi/objects");
+    this.setFile(".kiwi/HEAD", "");
+    this.setFileContent({
+      content: "",
+      objectId: "",
+      path: `.kiwi/HEAD`,
+    });
   };
 
   setTestDirectory = () => {
