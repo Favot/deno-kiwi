@@ -49,12 +49,13 @@ export class RealFeaturesService implements FeaturesService {
     }
 
     writeTree(
+        directoryPath: string = "./",
         fileSystem: FileSystemService,
         featureService: FeaturesService,
         hashService: HashService,
     ): Promise<string> {
         return writeTree(
-            "./",
+            directoryPath,
             fileSystem,
             featureService,
             hashService,
@@ -73,5 +74,14 @@ export class RealFeaturesService implements FeaturesService {
             objectId,
             workingDirectory,
         );
+    };
+
+    commit = (
+        _fileSystem: FileSystemService,
+        _featureService: FeaturesService,
+        _hashService: HashService,
+    ): Promise<void> => {
+        // TODO: Implement commit function
+        return Promise.resolve();
     };
 }

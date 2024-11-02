@@ -56,6 +56,7 @@ export async function main({
 
   if (args.writeTree) {
     featureService.writeTree(
+      "./",
       fileSystemService,
       featureService,
       hashService,
@@ -68,6 +69,14 @@ export async function main({
       featureService,
       args.readTree,
       "./",
+    );
+  }
+
+  if (args.commit) {
+    featureService.commit(
+      fileSystemService,
+      featureService,
+      hashService,
     );
   }
 }

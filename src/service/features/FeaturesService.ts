@@ -23,6 +23,7 @@ export interface FeaturesService {
         expectedType: ObjectType,
     ): Promise<string>;
     writeTree(
+        directoryPath: string,
         fileSystem: FileSystemService,
         featureService: FeaturesService,
         hashService: HashService,
@@ -33,5 +34,10 @@ export interface FeaturesService {
         featureService: FeaturesService,
         objectId: string,
         workingDirectory: string,
+    ): Promise<void>;
+    commit(
+        fileSystem: FileSystemService,
+        featureService: FeaturesService,
+        hashService: HashService,
     ): Promise<void>;
 }
