@@ -10,7 +10,7 @@ import {
   testFileThree,
   testFileTwo,
   topTreeDatabaseFile,
-} from "./mockData.ts";
+} from "./mockDataFirstCommit.ts";
 
 export class MockFileSystemService implements FileSystemService {
   private directories: Set<string> = new Set();

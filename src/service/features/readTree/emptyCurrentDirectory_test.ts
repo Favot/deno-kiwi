@@ -4,7 +4,7 @@ import {
     testFileOne,
     testFileThree,
     testFileTwo,
-} from "../../../adapter/fileSystem/mockData.ts";
+} from "../../../adapter/fileSystem/mockDataFirstCommit.ts";
 import {
     MockFileSystemService,
 } from "../../../adapter/fileSystem/MockFileSystemService.ts";
