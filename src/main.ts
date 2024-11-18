@@ -1,6 +1,10 @@
 import type { FileSystemService } from "./adapter/fileSystem/FileSystemService.ts";
 import { RealFileSystemService } from "./adapter/fileSystem/RealFileSystemService.ts";
-import { parseArguments } from "./cli/index.ts";
+import {
+  displayHelp,
+  KiwiCommand,
+  parseKiwiCommandArguments,
+} from "./cli/index.ts";
 import type { FeaturesService } from "./service/features/FeaturesService.ts";
 import { RealFeaturesService } from "./service/features/RealFeatureService.ts";
 import type { HashService } from "./service/hash/HashService.ts";
@@ -17,67 +21,71 @@ export async function main({
   fileSystemService?: FileSystemService;
   hashService?: HashService;
 }): Promise<void | string> {
-  const args = parseArguments(inputArgs);
-
-  if (args.help) {
-    featureService.printHelp();
-  }
-
-  if (args.init) {
-    console.log("init");
-    featureService.init(fileSystemService);
-  }
-
-  if (args.hashObject) {
-    if (!args.hashObject.length) {
-      return console.error("Missing file path for --hashObject flag");
-    }
-
-    const fileContent = await fileSystemService.readFile(args.hashObject);
+  const hashObject = async (fileName: string) => {
+    const fileContent = await fileSystemService.readFile(fileName);
 
     return await featureService.hashObject(
       fileContent,
       hashService,
       fileSystemService,
     );
-  }
+  };
 
-  if (args.catFile) {
-    if (!args.catFile.length) {
-      return console.error("Missing file path for --catFile flag");
+  const catFile = async (fileName: string) => {
+    await featureService.catFile(
+      fileName,
+      fileSystemService,
+      featureService,
+    );
+  };
+
+  try {
+    const args = parseKiwiCommandArguments(inputArgs);
+
+    switch (args.command) {
+      case KiwiCommand.Init:
+        featureService.init(fileSystemService);
+        break;
+      case KiwiCommand.Help:
+        featureService.printHelp();
+        break;
+      case KiwiCommand.HashObject:
+        await hashObject(args.args);
+        break;
+
+      case KiwiCommand.CatFile:
+        await catFile(args.args);
+        break;
+
+      case KiwiCommand.WriteTree:
+        featureService.writeTree(
+          "./",
+          fileSystemService,
+          featureService,
+          hashService,
+        );
+        break;
+
+      case KiwiCommand.ReadTree:
+        featureService.readTree(
+          fileSystemService,
+          featureService,
+          args.args,
+          "./",
+        );
+        break;
+
+      case KiwiCommand.Commit:
+        featureService.commit(
+          fileSystemService,
+          featureService,
+          hashService,
+        );
+        break;
     }
-
-    return await featureService.catFile(
-      args.catFile,
-      fileSystemService,
-      featureService,
-    );
-  }
-
-  if (args.writeTree) {
-    featureService.writeTree(
-      "./",
-      fileSystemService,
-      featureService,
-      hashService,
-    );
-  }
-
-  if (args.readTree) {
-    featureService.readTree(
-      fileSystemService,
-      featureService,
-      args.readTree,
-      "./",
-    );
-  }
-
-  if (args.commit) {
-    featureService.commit(
-      fileSystemService,
-      featureService,
-      hashService,
-    );
+  } catch (error) {
+    console.error(error);
+    displayHelp();
   }
 }
 

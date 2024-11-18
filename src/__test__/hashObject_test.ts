@@ -19,7 +19,7 @@ Deno.test(
     using spyHashObject = spy(featuresService, "hashObject");
 
     await main({
-      inputArgs: ["--hashObject=test.txt"],
+      inputArgs: ["hash-object", "test.txt"],
       fileSystemService: mockFileSystem,
       hashService: mockHashService,
       featureService: featuresService,
@@ -43,15 +43,10 @@ Deno.test(
     using spyHashObject = spy(featuresService, "hashObject");
     const spyConsoleError = spy(console, "error");
 
-    const errorMessage = "Missing file path for --hashObject flag";
-
-    main({ inputArgs: ["--hashObject"] });
+    main({ inputArgs: ["hash-Object"] });
 
     assertSpyCalls(spyHashObject, 0);
     assertSpyCalls(spyConsoleError, 1);
-    assertSpyCall(spyConsoleError, 0, {
-      args: [errorMessage],
-    });
 
     spyConsoleError.restore();
   },

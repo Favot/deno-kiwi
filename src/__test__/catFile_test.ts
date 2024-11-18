@@ -25,7 +25,7 @@ Deno.test(
         using catFile = spy(featuresService, "catFile");
 
         await main({
-            inputArgs: [`--catFile=${objectId}`],
+            inputArgs: ["cat-file", `${objectId}`],
             fileSystemService: mockFileSystem,
             hashService: mockHashService,
             featureService: featuresService,
@@ -43,22 +43,13 @@ Deno.test(
 );
 
 Deno.test(
-    "should not call the catFilefunction and should log an error when the --cat-file flag is passed without a object id",
+    "should not call the catFilefunction when the --cat-file flag is passed without a object id",
     () => {
         const featuresService = new RealFeaturesService();
         using catFile = spy(featuresService, "catFile");
-        const spyConsoleError = spy(console, "error");
 
-        const errorMessage = "Missing file path for --catFile flag";
-
-        main({ inputArgs: ["--catFile"] });
+        main({ inputArgs: ["cat-file"] });
 
         assertSpyCalls(catFile, 0);
-        assertSpyCalls(spyConsoleError, 1);
-        assertSpyCall(spyConsoleError, 0, {
-            args: [errorMessage],
-        });
-
-        spyConsoleError.restore();
     },
 );

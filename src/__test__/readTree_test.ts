@@ -3,14 +3,14 @@ import { MockFileSystemService } from "../adapter/fileSystem/MockFileSystemServi
 import { main } from "../main.ts";
 import { MockFeatureService } from "../service/features/MockFeatureService.ts";
 
-Deno.test("should call readTree function when the --readTree flag is passed", () => {
+Deno.test("should call readTree function when the read-tree flag is passed", () => {
     const featureService = new MockFeatureService();
     const mockFileSystem = new MockFileSystemService();
 
     const spyOnReadTree = spy(featureService, "readTree");
 
     main({
-        inputArgs: ["--readTree"],
+        inputArgs: ["read-tree", "./"],
         featureService,
         fileSystemService: mockFileSystem,
     });

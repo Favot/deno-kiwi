@@ -8,7 +8,7 @@ Deno.test(
     const featureService = new RealFeaturesService();
     const spyInit = spy(featureService, "init");
 
-    main({ inputArgs: ["--init"], featureService });
+    main({ inputArgs: ["init"], featureService });
 
     assertSpyCalls(spyInit, 1);
     spyInit.restore();

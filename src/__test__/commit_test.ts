@@ -3,7 +3,7 @@ import { MockFileSystemService } from "../adapter/fileSystem/MockFileSystemServi
 import { main } from "../main.ts";
 import { MockFeatureService } from "../service/features/MockFeatureService.ts";
 
-Deno.test("should call commit function when the --commit flag is passed", () => {
+Deno.test("should call commit function when the commit flag is passed", () => {
     const featureService = new MockFeatureService();
     const mockFileSystem = new MockFileSystemService();
     mockFileSystem.setTestProject();
@@ -11,7 +11,7 @@ Deno.test("should call commit function when the --commit flag is passed", () => 
     const spyOnCommit = spy(featureService, "commit");
 
     main({
-        inputArgs: ["--commit"],
+        inputArgs: ["commit", "commit message"],
         featureService,
         fileSystemService: mockFileSystem,
     });
