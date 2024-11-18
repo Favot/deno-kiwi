@@ -7,7 +7,7 @@ import {
     testFileThreeDatabaseFile,
     testFileTwoDatabaseFile,
     topTreeObjectId,
-} from "../../../adapter/fileSystem/mockData.ts";
+} from "../../../adapter/fileSystem/mockDataFirstCommit.ts";
 import { MockFileSystemService } from "../../../adapter/fileSystem/MockFileSystemService.ts";
 import { RealFeaturesService } from "../RealFeatureService.ts";
 import { getTree } from "./getTree.ts";

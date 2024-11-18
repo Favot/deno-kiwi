@@ -7,7 +7,7 @@ import {
     mockCommitFileWithHead,
     mockCommitFileWithHeadId,
     TEST_DIRECTORY_PATH,
-} from "../../../adapter/fileSystem/mockData.ts";
+} from "../../../adapter/fileSystem/mockDataFirstCommit.ts";
 import { MockFileSystemService } from "../../../adapter/fileSystem/MockFileSystemService.ts";
 import { GIT_DIR } from "../../../constants.ts";
 import { RealHashService } from "../../hash/RealHashService.ts";

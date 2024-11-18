@@ -10,7 +10,7 @@ import {
     testFileTwo,
     testFileTwoDatabaseFile,
     topTreeDatabaseFile,
-} from "../../../adapter/fileSystem/mockData.ts";
+} from "../../../adapter/fileSystem/mockDataFirstCommit.ts";
 import {
     MockFileSystemService,
 } from "../../../adapter/fileSystem/MockFileSystemService.ts";
